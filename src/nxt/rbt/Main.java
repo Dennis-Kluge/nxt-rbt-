@@ -6,10 +6,11 @@ import lejos.robotics.subsumption.Behavior;
 
 public class Main {
 
-	public static void main(String[] args) {
-		Behavior driveBe = new DriveBe();
+	public static void main(String[] args) {		
 		Behavior lightBe = new LightBe();
-		Behavior[] bArray = {driveBe,lightBe};
+		Behavior rightBe = new RightBe();
+		Behavior leftBe = new LeftBe();		
+		Behavior[] bArray = {lightBe, rightBe, leftBe};
 		Arbitrator arby = new Arbitrator(bArray);
 		LCD.drawString("Started", 0, 0);
 		arby.start();		

@@ -1,4 +1,6 @@
 *.class
+*.nxj
+*.nxd
 
 # Package Files #
 *.jar
