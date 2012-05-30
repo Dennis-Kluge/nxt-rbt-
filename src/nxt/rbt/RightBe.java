@@ -1,37 +1,38 @@
 package nxt.rbt;
 
 import lejos.nxt.LightSensor;
+import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.subsumption.Behavior;
 
 public class RightBe implements Behavior{
 	
-	
-	private LightSensor light;
+	private LightSensor s1;
+	private LightSensor s2;
 	
 	public RightBe() {
-		light = new LightSensor(SensorPort.S1);
+		s1 = new LightSensor(SensorPort.S1);
+		s1 = new LightSensor(SensorPort.S2);
 	}
 	
 	@Override
 	public boolean takeControl() {
-		if (light.readValue() > 40 ) 
+		if (s1.readValue() > 40 && s2.readValue() < 40) {
 			return true;
-		else
+		} else
 			return false;
 	}
 
 	@Override
 	public void action() {
-		// TODO Auto-generated method stub
-		
+		Motor.A.forward();
+		Motor.C.stop();
 	}
 
 	@Override
 	public void suppress() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	
-
 }
