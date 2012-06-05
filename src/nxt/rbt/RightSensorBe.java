@@ -1,5 +1,6 @@
 package nxt.rbt;
 
+import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
@@ -12,12 +13,13 @@ public class RightSensorBe implements Behavior{
 	
 	public RightSensorBe() {
 		s1 = new LightSensor(SensorPort.S1);
-		s1 = new LightSensor(SensorPort.S2);
+		s2 = new LightSensor(SensorPort.S2);
 	}
 	
 	@Override
 	public boolean takeControl() {
-		if (s1.readValue() > 40 && s2.readValue() < 40) {
+		LCD.drawString("Sensor1: " + s1.readValue() + " Sensor2: " + s2.readValue(), 0, 0);
+		if (s1.readValue() > 45 && s2.readValue() < 45) {
 			return true;
 		} else
 			return false;
@@ -25,8 +27,8 @@ public class RightSensorBe implements Behavior{
 
 	@Override
 	public void action() {
-		Motor.A.forward();
-		Motor.C.stop();
+		Motor.A.stop();
+		Motor.C.forward();
 	}
 
 	@Override
