@@ -20,16 +20,19 @@ public class CrossingBe implements Behavior{
 		
 	@Override
 	public boolean takeControl() {
-		LCD.drawString("Sensor1: " + s1.readValue() + " Sensor2: " + s3.readValue(), 0, 0);
-		if ((s1.readValue() > 45 && s2.readValue() > 45) || (s3.readValue() > 45 && s2.readValue() > 45) || (s3.readValue() > 45 && s2.readValue() > 45 && s1.readValue() > 45)) 
+		LCD.drawString("Crossing: \nSensor1: " + s1.readValue() + " Sensor2: " + s3.readValue(), 0, 0);
+		if ((s1.readValue() > ColorLimits.YELLOW_LIMIT && s2.readValue() > ColorLimits.YELLOW_LIMIT) ||
+				(s3.readValue() > ColorLimits.YELLOW_LIMIT && s2.readValue() > ColorLimits.YELLOW_LIMIT) || 
+				(s3.readValue() > ColorLimits.YELLOW_LIMIT && s2.readValue() > ColorLimits.YELLOW_LIMIT && s1.readValue() > ColorLimits.YELLOW_LIMIT)) 
 			return true;
 		else
 			return false;
 	}
 
 	@Override
-	public void action() {				
-		Motor.A.backward();
+	public void action() {	
+		LCD.drawString("Kreuzung ", 0, 0);
+		Motor.A.rotate(720);
 		Motor.C.backward();		
 	}
 
