@@ -10,16 +10,18 @@ public class CrossingBe implements Behavior{
 
 	LightSensor s1;
 	LightSensor s2;
+	LightSensor s3;
 	
 	public CrossingBe() {
-		s1= new LightSensor(SensorPort.S1);
-		s2= new LightSensor(SensorPort.S2);
+		s1 = new LightSensor(SensorPort.S1);
+		s2 = new LightSensor(SensorPort.S2);
+		s3 = new LightSensor(SensorPort.S3);
 	}
 		
 	@Override
 	public boolean takeControl() {
-		LCD.drawString("Sensor1: " + s1.readValue() + " Sensor2: " + s2.readValue(), 0, 0);
-		if (s1.readValue() > 45 && s2.readValue() > 45 ) 
+		LCD.drawString("Sensor1: " + s1.readValue() + " Sensor2: " + s3.readValue(), 0, 0);
+		if ((s1.readValue() > 45 && s2.readValue() > 45) || (s3.readValue() > 45 && s2.readValue() > 45) || (s3.readValue() > 45 && s2.readValue() > 45 && s1.readValue() > 45)) 
 			return true;
 		else
 			return false;
