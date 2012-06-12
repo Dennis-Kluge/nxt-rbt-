@@ -4,6 +4,7 @@ import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
+import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
 public class EndLineBe implements Behavior{
@@ -12,10 +13,14 @@ public class EndLineBe implements Behavior{
 	LightSensor s2;
 	LightSensor s3;
 	
-	public EndLineBe() {
+	DifferentialPilot pilot;
+	
+	public EndLineBe(DifferentialPilot pilot) {
 		s1 = new LightSensor(SensorPort.S1);
 		s2 = new LightSensor(SensorPort.S2);
 		s3 = new LightSensor(SensorPort.S3);
+		
+		this.pilot = pilot;
 	}
 		
 	@Override
