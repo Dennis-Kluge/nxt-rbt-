@@ -4,20 +4,18 @@ import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.navigation.DifferentialPilot;
-import lejos.robotics.subsumption.Behavior;
+import lejos.robotics.navigation.Navigator;
+import lejos.robotics.navigation.Pose;
 
-public class RightSensorBe implements Behavior{
+public class RightSensorBe extends AbstractBehavior {
 	
 	private LightSensor s1;	
 	private LightSensor s3;
 	
-	DifferentialPilot pilot; 
-	
-	public RightSensorBe(DifferentialPilot pilot) {
+	public RightSensorBe(Navigator navigator, DifferentialPilot pilot, Pose pose) {
+		super(navigator, pilot, pose);
 		s1 = new LightSensor(SensorPort.S1);		
-		s3 = new LightSensor(SensorPort.S3);
-		
-		this.pilot = pilot;
+		s3 = new LightSensor(SensorPort.S3);			
 	}
 	
 	@Override
