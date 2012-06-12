@@ -1,6 +1,7 @@
 package nxt.rbt;
 
 import lejos.nxt.LCD;
+import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Navigator;
 import lejos.robotics.navigation.Pose;
@@ -10,16 +11,16 @@ public abstract class AbstractBehavior implements Behavior {
 	
 	protected Navigator navigator;
 	protected DifferentialPilot pilot;
-	protected Pose pose;
+	protected OdometryPoseProvider poseProvider;
 	
-	public AbstractBehavior(Navigator navigator, DifferentialPilot pilot, Pose pose) {
+	public AbstractBehavior(Navigator navigator, DifferentialPilot pilot, OdometryPoseProvider poseProvider) {
 		this.navigator = navigator;
 		this.pilot = pilot;
-		this.pose = pose;
+		this.poseProvider = poseProvider;
 	}
 	
 	protected void logPosition() {
-		LCD.drawString("Pose - X: " + pose.getX() + " Y: " + pose.getY(), 0, 400);
+		LCD.drawString("Pose - X: " + poseProvider.getPose().getX() + " Y: " + poseProvider.getPose().getY(), 0, 2);
 	}
 	
 }

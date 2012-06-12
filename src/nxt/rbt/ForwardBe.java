@@ -3,9 +3,9 @@ package nxt.rbt;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
+import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Navigator;
-import lejos.robotics.navigation.Pose;
 
 public class ForwardBe extends AbstractBehavior {
 
@@ -13,8 +13,8 @@ public class ForwardBe extends AbstractBehavior {
 	LightSensor s2;
 	LightSensor s3;	
 	
-	public ForwardBe(Navigator navigator, DifferentialPilot pilot, Pose pose) {
-		super(navigator, pilot, pose);
+	public ForwardBe(Navigator navigator, DifferentialPilot pilot, OdometryPoseProvider poseProvider) {
+		super(navigator, pilot, poseProvider);
 		s1 = new LightSensor(SensorPort.S1);
 		s2 = new LightSensor(SensorPort.S2);
 		s3 = new LightSensor(SensorPort.S3);			
