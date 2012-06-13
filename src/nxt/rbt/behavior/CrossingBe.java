@@ -38,8 +38,7 @@ public class CrossingBe implements Behavior{
 	@Override
 	public void action() {	
 		LCD.drawString("Kreuzung ", 0, 0);
-		Motor.A.rotate(720);
-		Motor.C.backward();		
+		pilot.stop();
 	}
 
 	@Override
