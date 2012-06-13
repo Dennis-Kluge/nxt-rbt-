@@ -32,7 +32,7 @@ public class RightSensorBe extends AbstractBehavior {
 
 	@Override
 	public void action() {
-		pilot.rotate(-1 * NavigationLimits.ANGLE);
+		pilot.steer(-1 * NavigationLimits.TURN_RATE);
 	}
 
 	@Override
