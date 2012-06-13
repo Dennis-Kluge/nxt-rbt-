@@ -43,4 +43,8 @@ public class Line {
 		}				
 		return 0;		
 	}
+	
+	public void clearLine() {
+		points.clear();
+	}
 }

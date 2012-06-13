@@ -2,20 +2,19 @@ package nxt.rbt.behavior;
 
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.limit.NavigationLimits;
+import nxt.rbt.navigation.LabyrinthNavigator;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
-import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
-import lejos.robotics.navigation.Navigator;
 
 public class LeftSensorBe extends AbstractBehavior{
 	
 	private LightSensor s1;	
 	private LightSensor s3;
 	
-	public LeftSensorBe(Navigator navigator, DifferentialPilot pilot, OdometryPoseProvider poseProvider) {
-		super(navigator, pilot, poseProvider);
+	public LeftSensorBe(LabyrinthNavigator navigator, DifferentialPilot pilot) {
+		super(navigator, pilot);
 		s1 = new LightSensor(SensorPort.S1);		
 		s3 = new LightSensor(SensorPort.S3);			
 	}
