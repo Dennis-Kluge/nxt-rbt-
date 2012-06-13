@@ -19,7 +19,7 @@ public abstract class AbstractBehavior implements Behavior {
 	}
 	
 	protected void logPosition() {
-		LCD.drawString("Pose - X: " + poseProvider.getPose().getX() + " Y: " + poseProvider.getPose().getY(), 0, 2);
+		LCD.drawString("Pose - X: " + poseProvider.getPose().getX() + "\n Y: " + poseProvider.getPose().getY(), 0, 2);
 	}	
 	
 }
