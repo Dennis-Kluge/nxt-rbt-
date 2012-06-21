@@ -26,7 +26,7 @@ public class EndLineBe implements Behavior{
 		
 	@Override
 	public boolean takeControl() {
-		LCD.drawString("Endline: Sensor1: " + s1.readValue() + " Sensor2: " + s3.readValue(), 0, 0);
+		LCD.drawString("Endline: Sensor1: " + s1.readValue() + " \nSensor2: " + s2.readValue() + " \nSensor3: " + s3.readValue(), 0, 0);
 		if ((s1.readValue() < ColorLimits.WHITE_LIMIT || s2.readValue() < ColorLimits.WHITE_LIMIT || s3.readValue() < ColorLimits.WHITE_LIMIT)) 
 			return true;
 		else
