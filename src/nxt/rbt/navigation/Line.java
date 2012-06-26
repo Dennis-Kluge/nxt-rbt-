@@ -20,8 +20,7 @@ public class Line {
 	public void addPoint(float x, float y) {
 		points.add(new Point(x, y));
 		counter++;
-		if (counter == 30) {
-			LCD.drawString("Distance: " + getDistance(), 0, 6);
+		if (counter == 30) {			
 			counter = 0;
 		}
 	}
@@ -39,6 +38,7 @@ public class Line {
 				if (iterator.hasNext()) 
 					point = iterator.next();				
 			}
+			LCD.drawString("Distance: " + distance, 0, 6);
 			return distance;
 		}				
 		return 0;		

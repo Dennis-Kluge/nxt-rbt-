@@ -37,7 +37,7 @@ public class ForwardBe extends AbstractBehavior {
 
 	@Override
 	public void action() {
-		//navigator.addPoint();
+		navigator.addPoint();
 		pilot.forward();
 	}
 
