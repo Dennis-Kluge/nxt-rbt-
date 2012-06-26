@@ -1,5 +1,6 @@
 package nxt.rbt.behavior;
 
+import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.navigation.LabyrinthNavigator;
 import lejos.nxt.LCD;
 import lejos.robotics.localization.OdometryPoseProvider;
@@ -16,4 +17,8 @@ public abstract class AbstractBehavior implements Behavior {
 		this.navigator = navigator;
 		this.pilot = pilot;		
 	}
+	
+	protected boolean isInYellow(int value) {
+		return (value > ColorLimits.YELLOW_LIMIT && value < ColorLimits.WHITE_LIMIT); 
+}
 }

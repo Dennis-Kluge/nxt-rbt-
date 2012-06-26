@@ -30,9 +30,9 @@ public class Main {
 		Behavior rightBe = new RightSensorBe(navigator, pilot);
 		Behavior leftBe = new LeftSensorBe(navigator, pilot);
 		Behavior crossingBe = new CrossingBe(navigator, pilot);
-		Behavior endBe = new EndLineBe(pilot);
+		Behavior endBe = new EndLineBe(navigator, pilot);
 //		Behavior[] bArray = {endBe,crossingBe, forwardBe, rightBe,leftBe};
-		Behavior[] bArray = {forwardBe, crossingBe, rightBe,leftBe };
+		Behavior[] bArray = {endBe, forwardBe, crossingBe, rightBe,leftBe };
 		Arbitrator arby = new Arbitrator(bArray);
 		LCD.drawString("Started", 0, 0);
 		arby.start();		
