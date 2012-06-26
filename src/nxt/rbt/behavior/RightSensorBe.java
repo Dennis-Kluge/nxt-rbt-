@@ -23,7 +23,7 @@ public class RightSensorBe extends AbstractBehavior {
 	
 	@Override
 	public boolean takeControl() {
-		LCD.drawString("RightSensor: \nSensor1: " + s1.readValue() + " \nSensor2: " + s2.readValue() + " \nSensor3: " + s3.readValue(), 0, 0);
+		//LCD.drawString("RightSensor: \nSensor1: " + s1.readValue() + " \nSensor2: " + s2.readValue() + " \nSensor3: " + s3.readValue(), 0, 0);
 		//LCD.drawString("Right", 0, 200);
 		if (s1.readValue() > ColorLimits.YELLOW_LIMIT && s3.readValue() < ColorLimits.YELLOW_LIMIT && s2.readValue() < ColorLimits.YELLOW_LIMIT) {
 			return true;

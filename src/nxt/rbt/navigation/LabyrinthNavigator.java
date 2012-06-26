@@ -32,13 +32,14 @@ public class LabyrinthNavigator {
 		
 	public void addPoint() {
 		line.addPoint(poseProvider.getPose().getX(), poseProvider.getPose().getY());
-	}
+	}		
 	
 	public void addNode() {
-		
+		float distance = line.getDistance();
+		line.clearLine();
 	}
 	
 	public void logPosition() {
-		LCD.drawString("Pose - X: " + poseProvider.getPose().getX() + "\n Y: " + poseProvider.getPose().getY(), 0, 2);
+		//LCD.drawString("Pose - X: " + poseProvider.getPose().getX() + "\n Y: " + poseProvider.getPose().getY(), 0, 2);
 	}	
 }
