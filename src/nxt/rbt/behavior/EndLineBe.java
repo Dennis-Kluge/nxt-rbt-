@@ -16,8 +16,6 @@ public class EndLineBe extends AbstractBehavior{
 	LightSensor s2;
 	LightSensor s3;
 	
-	DifferentialPilot pilot;
-	
 	public EndLineBe(LabyrinthNavigator navigator, DifferentialPilot pilot) {
 		super(navigator, pilot);
 		s1 = new LightSensor(SensorPort.S1);
