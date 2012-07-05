@@ -1,6 +1,10 @@
 package nxt.rbt;
 
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import nxt.rbt.behavior.CrossingBe;
 import nxt.rbt.behavior.EndLineBe;
 import nxt.rbt.behavior.ForwardBe;
@@ -11,6 +15,8 @@ import nxt.rbt.navigation.LabyrinthNavigator;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
+import lejos.nxt.comm.BTConnection;
+import lejos.nxt.comm.Bluetooth;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Arbitrator;
@@ -19,12 +25,18 @@ import lejos.robotics.subsumption.Behavior;
 public class Main {
 
 	public static void main(String[] args) {
+		LCD.drawString("Try to connect...", 0, 0);
+		BTConnection btConn = Bluetooth.waitForConnection();
+		DataOutputStream outputStream = btConn.openDataOutputStream();
+		LCD.drawString("", 0, 0);
+		LCD.drawString("connected", 0, 0);
+		
 		Button.ENTER.waitForPressAndRelease();
 		DifferentialPilot pilot = new DifferentialPilot(2.25f, 4.8f, Motor.C, Motor.A);	
 		pilot.setRotateSpeed(NavigationLimits.ROTATE_SPEED);
 		pilot.setTravelSpeed(NavigationLimits.TRAVEL_SPEED);				
 		OdometryPoseProvider poseProvider = new OdometryPoseProvider(pilot);
-		LabyrinthNavigator navigator = new LabyrinthNavigator(poseProvider);
+		LabyrinthNavigator navigator = new LabyrinthNavigator(poseProvider, outputStream);
 		
 		Behavior forwardBe = new ForwardBe(navigator, pilot);
 		Behavior rightBe = new RightSensorBe(navigator, pilot);

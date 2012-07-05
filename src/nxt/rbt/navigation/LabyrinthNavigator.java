@@ -1,5 +1,6 @@
 package nxt.rbt.navigation;
 
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,14 +27,16 @@ public class LabyrinthNavigator {
 	int edgeCounter;
 	
 	PoseProvider poseProvider;
+	OutputStream outputStream;
 	
-	public LabyrinthNavigator(PoseProvider poseProvider) {
+	public LabyrinthNavigator(PoseProvider poseProvider, OutputStream outputStream) {
 		//graph = new Graph(vertexes, edges)
 		
 		edges = new LinkedList<Edge>();
 		vertexes = new LinkedList<Vertex>();
 		
 		this.poseProvider = poseProvider;
+		this.outputStream = outputStream;
 		
 		line = new Line();
 		vertexCounter = 0;		
