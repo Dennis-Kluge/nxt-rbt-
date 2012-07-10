@@ -37,7 +37,7 @@ public class EndLineBe extends AbstractBehavior{
 	public void action() {	
 //		LCD.drawString("Ende ", 0, 0);
 		do {
-			pilot.rotate(NavigationLimits.CROSSING_TURN_RATE);
+			pilot.rotate(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
 		} while (!isInYellow(s2.readValue()));
 			
 	}
