@@ -27,7 +27,7 @@ public class ForwardBe extends AbstractBehavior {
 	@Override
 	public boolean takeControl() {
 		//LCD.drawString("Forward: \nSensor1: " + s1.readValue() + " \nSensor3: " + s3.readValue(), 0, 0);
-		//LCD.drawString("Forward", 0, 1);
+		//LCD.drawString("Forward: " + s2.readValue(), 0, 0);
 		//navigator.logPosition();
 		if (s1.readValue() < ColorLimits.YELLOW_LIMIT && s3.readValue() < ColorLimits.YELLOW_LIMIT ) 
 			return true;
