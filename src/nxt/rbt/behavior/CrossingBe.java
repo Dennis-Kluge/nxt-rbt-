@@ -7,6 +7,7 @@ import lejos.robotics.navigation.DifferentialPilot;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.limit.NavigationLimits;
 import nxt.rbt.navigation.LabyrinthNavigator;
+import nxt.rbt.navigation.CrossingCounter;
 
 public class CrossingBe extends AbstractBehavior{
 
@@ -35,6 +36,20 @@ public class CrossingBe extends AbstractBehavior{
 
 	@Override
 	public void action() {
+		
+		// zum scannen der kreuzung - wie viele abzweigungen vorhanden sind 
+		CrossingCounter sc =  new CrossingCounter();
+		pilot.travel(2.0);
+		do {
+			pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE_SEACH);
+			sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_SEACH);
+			if(isInYellow(s2.readValue()) && sc.getCurrentAngle() > (sc.getAngleLastLine() + 20)) {
+				sc.addCount();
+			}
+		} while (sc.getCurrentAngle() < NavigationLimits.COMPLETE_ROTATION);
+		
+		
+		// zum abfahren der kreuzung nach rechts und links 
 		if (s1.readValue() > ColorLimits.YELLOW_LIMIT && s2.readValue() > ColorLimits.YELLOW_LIMIT) {
 			// right
 			pilot.travel(2.0);
