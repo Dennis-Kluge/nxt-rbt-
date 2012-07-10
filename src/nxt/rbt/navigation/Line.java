@@ -37,8 +37,7 @@ public class Line {
 				tempPoint = point;
 				if (iterator.hasNext()) 
 					point = iterator.next();				
-			}
-			LCD.drawString("Distance: " + distance, 0, 6);
+			}			
 			return distance;
 		}				
 		return 0;		
