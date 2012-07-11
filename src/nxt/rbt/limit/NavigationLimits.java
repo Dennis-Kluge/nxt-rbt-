@@ -7,7 +7,7 @@ public class NavigationLimits {
 	public static int CROSSING_TURN_RATE_ENDLINE = 10;
 	public static int CROSSING_TURN_RATE_SEARCH = 5;
 	
-	public static int COMPLETE_ROTATION = 340;
+	public static int COMPLETE_ROTATION = 355;
 	
 	// degress per second
 	public static int ROTATE_SPEED = 60;
