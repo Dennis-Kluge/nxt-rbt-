@@ -20,5 +20,5 @@ public abstract class AbstractBehavior implements Behavior {
 	
 	protected boolean isInYellow(int value) {
 		return (value > ColorLimits.YELLOW_LIMIT && value < ColorLimits.WHITE_LIMIT); 
-}
+	}
 }

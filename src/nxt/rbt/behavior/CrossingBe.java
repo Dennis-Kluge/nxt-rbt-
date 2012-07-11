@@ -19,8 +19,7 @@ public class CrossingBe extends AbstractBehavior{
 		super(navigator, pilot);
 		s1 = new LightSensor(SensorPort.S1);
 		s2 = new LightSensor(SensorPort.S2);
-		s3 = new LightSensor(SensorPort.S3);
-		
+		s3 = new LightSensor(SensorPort.S3);		
 	}
 		
 	@Override
@@ -41,8 +40,8 @@ public class CrossingBe extends AbstractBehavior{
 		CrossingCounter sc =  new CrossingCounter();
 		pilot.travel(2.0);
 		do {
-			pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE_SEACH);
-			sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_SEACH);
+			pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE_SEARCH);
+			sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_SEARCH);
 			if(isInYellow(s2.readValue()) && sc.getCurrentAngle() > (sc.getAngleLastLine() + 20)) {
 				sc.addCount();
 			}

@@ -4,10 +4,11 @@ public class Vertex {
 	final private String id;
 	final private String name;
 	
+	DirectionStates[] directions = {DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE}; 
 	
 	public Vertex(String id, String name) {
 		this.id = id;
-		this.name = name;
+		this.name = name;		
 	}
 	public String getId() {
 		return id;
