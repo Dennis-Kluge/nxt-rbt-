@@ -17,6 +17,10 @@ public class CrossingCounter {
 		angleLastLine = 0;
 	}
 	
+	public void resetCurrentAngle() {
+		currentAngle = 0;
+	}
+	
 	public void addCount() {
 		count +=1;
 		angleLastLine = currentAngle;

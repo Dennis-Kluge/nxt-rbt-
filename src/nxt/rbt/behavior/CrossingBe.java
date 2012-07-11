@@ -62,15 +62,19 @@ public class CrossingBe extends AbstractBehavior{
 		if (s1.readValue() > ColorLimits.YELLOW_LIMIT && s2.readValue() > ColorLimits.YELLOW_LIMIT) {
 			// right
 			pilot.travel(2.0);
+			sc.resetCurrentAngle();
 			do {
 				pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE);
-			} while (s2.readValue() < ColorLimits.YELLOW_LIMIT); 			
+			} while (!isInYellow(s2.readValue()) && sc.getCurrentAngle() < 20);
+			sc.setRight(DirectionStates.TAKEN);
 		} else if (s2.readValue() > ColorLimits.YELLOW_LIMIT && s3.readValue() > ColorLimits.YELLOW_LIMIT) {
 			//left
 			pilot.travel(2.0);
+			sc.resetCurrentAngle();
 			do {
 				pilot.rotate(NavigationLimits.CROSSING_TURN_RATE);
-			} while (s2.readValue() < ColorLimits.YELLOW_LIMIT);
+			} while (!isInYellow(s2.readValue()) && sc.getCurrentAngle() < 20);
+			sc.setLeft(DirectionStates.TAKEN);
 		}
 		
 		navigator.addNode(sc.getDirections());
