@@ -4,12 +4,35 @@ public class Vertex {
 	final private String id;
 	final private String name;
 	
-	DirectionStates[] directions = {DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE}; 
+	DirectionStates[] directions = {DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE};
+	
+	boolean isEnding;
 	
 	public Vertex(String id, String name) {
 		this.id = id;
 		this.name = name;		
 	}
+	
+	public Vertex(String id, String name, DirectionStates[] directions) {
+		this.id = id;
+		this.name = name;		
+		this.directions = directions;
+	}
+	
+	public void turnDirections() {
+		for(int i = 0; i < 4; i++) {
+			if (i != 3) {
+				directions[i+1] = directions[i];
+			} else {
+				directions[0] = directions[i];
+			}			
+		}
+	}
+	
+	public DirectionStates[] getDirections() {
+		return directions;
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -47,5 +70,13 @@ public class Vertex {
 	public String toString() {
 		return name;
 	}
+
+	public boolean isEnding() {
+		return isEnding;
+	}
+
+	public void setEnding(boolean isEnding) {
+		this.isEnding = isEnding;
+	}		
 	
 }

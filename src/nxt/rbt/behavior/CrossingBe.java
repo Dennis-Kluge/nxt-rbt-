@@ -73,7 +73,7 @@ public class CrossingBe extends AbstractBehavior{
 			} while (s2.readValue() < ColorLimits.YELLOW_LIMIT);
 		}
 		
-		navigator.addNode();
+		navigator.addNode(sc.getDirections());
 	}
 
 	@Override

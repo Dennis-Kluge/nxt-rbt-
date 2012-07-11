@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import lejos.geom.Point;
-import lejos.nxt.LCD;
 
 public class Line {
 	
