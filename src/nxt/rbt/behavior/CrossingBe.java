@@ -4,10 +4,11 @@ import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.navigation.DifferentialPilot;
+import nxt.rbt.graph.DirectionStates;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.limit.NavigationLimits;
-import nxt.rbt.navigation.LabyrinthNavigator;
 import nxt.rbt.navigation.CrossingCounter;
+import nxt.rbt.navigation.LabyrinthNavigator;
 
 public class CrossingBe extends AbstractBehavior{
 
@@ -43,9 +44,18 @@ public class CrossingBe extends AbstractBehavior{
 			pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE_SEARCH);
 			sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_SEARCH);
 			if(isInYellow(s2.readValue()) && sc.getCurrentAngle() > (sc.getAngleLastLine() + 20)) {
+				int currentAngle = sc.getCurrentAngle();
+				if(currentAngle >= 0 && currentAngle <= 20 || currentAngle > 300) {
+					sc.setForward(DirectionStates.POSSIBLE);
+				} else if(currentAngle > 20 && currentAngle <= 100) {
+					sc.setRight(DirectionStates.POSSIBLE);
+				} else if(currentAngle> 190 && currentAngle <= 300) {
+					sc.setLeft(DirectionStates.POSSIBLE);
+				}
 				sc.addCount();
 			}
 		} while (sc.getCurrentAngle() < NavigationLimits.COMPLETE_ROTATION);
+		
 		
 		
 		// zum abfahren der kreuzung nach rechts und links 
