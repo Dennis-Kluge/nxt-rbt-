@@ -1,7 +1,6 @@
 package nxt.rbt.navigation;
 
 import java.io.OutputStream;
-import java.util.List;
 
 import lejos.robotics.localization.PoseProvider;
 import nxt.rbt.graph.DirectionStates;
@@ -11,10 +10,6 @@ import nxt.rbt.graph.Node;
 public class LabyrinthNavigator {
 
 	private Graph graph;	
-	private List<Node> vertexes;
-
-	private Node currentVertex;
-	private int vertexCounter;
 
 	private PoseProvider poseProvider;
 	private OutputStream outputStream;
@@ -25,7 +20,6 @@ public class LabyrinthNavigator {
 
 		this.poseProvider = poseProvider;
 		this.outputStream = outputStream;
-		
 		graph = new Graph(outputStream);
 		graph.addEndNode(poseProvider.getPose().getX(), poseProvider.getPose().getY());
 
@@ -46,8 +40,28 @@ public class LabyrinthNavigator {
 	
 	public void turnDirection() {
 		turned = true;
-		for (Node vertex : vertexes) {
+		for (Node vertex : graph.getVertexes()) {
 			vertex.turnDirections();
 		}
+	}
+	
+	public boolean hasNode() {
+		if(graph.nodeExists(poseProvider.getPose().getX(), poseProvider.getPose().getY()) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public DirectionStates[] getDirections() {
+		DirectionStates[] ret = graph.getDirection(poseProvider.getPose().getX(), poseProvider.getPose().getY());
+		if(ret != null) {
+			return ret;
+		}
+		return ret;
+	}
+	
+	public void updateDirectionsForNode(DirectionStates[] states) {
+		graph.updateDirectionsForNode(states, poseProvider.getPose().getX(), poseProvider.getPose().getY());
 	}
 }

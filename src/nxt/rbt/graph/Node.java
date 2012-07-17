@@ -40,6 +40,10 @@ public class Node {
 		return directions;
 	}
 	
+	public void setDirection(DirectionStates[] states) {
+		directions = states;
+	}
+	
 	public String getId() {
 		return id;
 	}

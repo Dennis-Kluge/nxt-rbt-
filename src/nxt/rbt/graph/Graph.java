@@ -15,8 +15,6 @@ public class Graph {
 	private Node currentVertex;
 	private int vertexCounter;
 
-	private Edge previousEdge;
-	private Edge currentEdge;
 	private int edgeCounter;
 	
 	private Line line;
@@ -27,7 +25,7 @@ public class Graph {
 
 	public Graph(OutputStream outputStream) {
 		this.outputStream = outputStream;
-		
+		this.line = new Line();
 		this.nodes = new ArrayList<Node>();
 		this.edges = new ArrayList<Edge>();
 		
@@ -35,11 +33,19 @@ public class Graph {
 		edgeCounter   = 0;
 	}
 	
-	public DirectionStates[] getDirection() {
-		// vorletzte 
-		Node vertex = nodes.get(nodes.size() - 2);
-		// welche mšglichen richtungen
-		return vertex.getDirections();		
+	public DirectionStates[] getDirection(float x, float y) {
+		Node node = nodeExists(x, y);
+		if(node != null) {
+			return node.getDirections();
+		}
+		return null;
+	}
+	
+	public void updateDirectionsForNode(DirectionStates[] states, float x, float y) {
+		Node node = nodeExists(x, y);
+		if(node != null) {
+			node.setDirection(states);
+		}
 	}
 	
 	public void addNode(DirectionStates[] possibleDirections, float x, float y) {
@@ -73,7 +79,7 @@ public class Graph {
 		currentVertex = node;
 	}
 	
-	private Node nodeExists(float x, float y) {
+	public Node nodeExists(float x, float y) {
 		for(Node node : nodes) {
 			if((node.getX() > x + NODE_TOLERANCY || node.getX() < x - NODE_TOLERANCY) 
 			    && (node.getY() > x + NODE_TOLERANCY || node.getY() < x - NODE_TOLERANCY)) {

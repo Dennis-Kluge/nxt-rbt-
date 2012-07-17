@@ -36,47 +36,53 @@ public class CrossingBe extends AbstractBehavior{
 	@Override
 	public void action() {
 		
-		// zum scannen der kreuzung - wie viele abzweigungen vorhanden sind 
 		CrossingCounter sc =  new CrossingCounter();
-		pilot.travel(2.0);
-		do {
-			pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE_SEARCH);
-			sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_SEARCH);
-			if(isInYellow(s2.readValue()) && sc.getCurrentAngle() > (sc.getAngleLastLine() + 20)) {
-				int currentAngle = sc.getCurrentAngle();
-				if(currentAngle >= 0 && currentAngle <= 20 || currentAngle > 300) {
-					sc.setForward(DirectionStates.POSSIBLE);
-				} else if(currentAngle > 20 && currentAngle <= 100) {
-					sc.setRight(DirectionStates.POSSIBLE);
-				} else if(currentAngle> 190 && currentAngle <= 300) {
-					sc.setLeft(DirectionStates.POSSIBLE);
+		if(!navigator.hasNode()) {
+			// zum scannen der kreuzung - wie viele abzweigungen vorhanden sind 
+			pilot.travel(2.0);
+			do {
+				pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE_SEARCH);
+				sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_SEARCH);
+				if(isInYellow(s2.readValue()) && sc.getCurrentAngle() > (sc.getAngleLastLine() + 20)) {
+					int currentAngle = sc.getCurrentAngle();
+					if(currentAngle >= 0 && currentAngle <= 20 || currentAngle > 300) {
+						sc.setForward(DirectionStates.POSSIBLE);
+					} else if(currentAngle > 20 && currentAngle <= 100) {
+						sc.setRight(DirectionStates.POSSIBLE);
+					} else if(currentAngle> 190 && currentAngle <= 300) {
+						sc.setLeft(DirectionStates.POSSIBLE);
+					}
+					sc.addCount();
 				}
-				sc.addCount();
-			}
-		} while (sc.getCurrentAngle() < NavigationLimits.COMPLETE_ROTATION);
-		
-		
-		
-		// zum abfahren der kreuzung nach rechts und links 
-		if (s1.readValue() > ColorLimits.YELLOW_LIMIT && s2.readValue() > ColorLimits.YELLOW_LIMIT) {
-			// right
-			pilot.travel(2.0);
-			sc.resetCurrentAngle();
-			do {
-				pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE);
-			} while (!isInYellow(s2.readValue()) && sc.getCurrentAngle() < 20);
-			sc.setRight(DirectionStates.TAKEN);
-		} else if (s2.readValue() > ColorLimits.YELLOW_LIMIT && s3.readValue() > ColorLimits.YELLOW_LIMIT) {
-			//left
-			pilot.travel(2.0);
-			sc.resetCurrentAngle();
-			do {
-				pilot.rotate(NavigationLimits.CROSSING_TURN_RATE);
-			} while (!isInYellow(s2.readValue()) && sc.getCurrentAngle() < 20);
-			sc.setLeft(DirectionStates.TAKEN);
+			} while (sc.getCurrentAngle() < NavigationLimits.COMPLETE_ROTATION);
+			navigator.addNode(sc.getDirections());
 		}
 		
-		navigator.addNode(sc.getDirections());
+		DirectionStates[] states = navigator.getDirections();
+		if(states != null) {
+			// zum abfahren der kreuzung nach rechts und links 
+			if (states[0] == DirectionStates.POSSIBLE) {
+				// right
+				pilot.travel(2.0);
+				sc.resetCurrentAngle();
+				do {
+					pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE);
+				} while (!isInYellow(s2.readValue()) && sc.getCurrentAngle() < 20);
+				states[0] = DirectionStates.TAKEN;
+				navigator.updateDirectionsForNode(states);
+			} else if (states[2] == DirectionStates.POSSIBLE) {
+				//left
+				pilot.travel(2.0);
+				sc.resetCurrentAngle();
+				do {
+					pilot.rotate(NavigationLimits.CROSSING_TURN_RATE);
+				} while (!isInYellow(s2.readValue()) && sc.getCurrentAngle() < 20);
+				states[2] = DirectionStates.TAKEN;
+				navigator.updateDirectionsForNode(states);
+			} else if(states[3] == DirectionStates.POSSIBLE) {
+				return;
+			}
+		}
 	}
 
 	@Override

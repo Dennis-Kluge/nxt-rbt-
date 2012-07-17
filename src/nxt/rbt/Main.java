@@ -2,16 +2,7 @@ package nxt.rbt;
 
 
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
-import nxt.rbt.behavior.CrossingBe;
-import nxt.rbt.behavior.EndLineBe;
-import nxt.rbt.behavior.ForwardBe;
-import nxt.rbt.behavior.LeftSensorBe;
-import nxt.rbt.behavior.RightSensorBe;
-import nxt.rbt.limit.NavigationLimits;
-import nxt.rbt.navigation.LabyrinthNavigator;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
@@ -21,6 +12,13 @@ import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
+import nxt.rbt.behavior.CrossingBe;
+import nxt.rbt.behavior.EndLineBe;
+import nxt.rbt.behavior.ForwardBe;
+import nxt.rbt.behavior.LeftSensorBe;
+import nxt.rbt.behavior.RightSensorBe;
+import nxt.rbt.limit.NavigationLimits;
+import nxt.rbt.navigation.LabyrinthNavigator;
 
 public class Main {
 
