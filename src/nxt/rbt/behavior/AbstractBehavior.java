@@ -1,12 +1,9 @@
 package nxt.rbt.behavior;
 
+import lejos.robotics.navigation.DifferentialPilot;
+import lejos.robotics.subsumption.Behavior;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.navigation.LabyrinthNavigator;
-import lejos.nxt.LCD;
-import lejos.robotics.localization.OdometryPoseProvider;
-import lejos.robotics.navigation.DifferentialPilot;
-import lejos.robotics.navigation.Navigator;
-import lejos.robotics.subsumption.Behavior;
 
 public abstract class AbstractBehavior implements Behavior {
 	

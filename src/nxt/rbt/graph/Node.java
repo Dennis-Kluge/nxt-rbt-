@@ -1,22 +1,29 @@
 package nxt.rbt.graph;
 
-public class Vertex {
+public class Node {
 	final private String id;
 	final private String name;
+	
+	private final float x;
+	private final float y;
 	
 	DirectionStates[] directions = {DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE};
 	
 	boolean isEnding;
 	
-	public Vertex(String id, String name) {
+	public Node(String id, String name, float x, float y) {
 		this.id = id;
 		this.name = name;		
+		this.x = x;
+		this.y = y;
 	}
 	
-	public Vertex(String id, String name, DirectionStates[] directions) {
+	public Node(String id, String name, DirectionStates[] directions, float x, float y) {
 		this.id = id;
 		this.name = name;		
 		this.directions = directions;
+		this.x = x;
+		this.y = y;
 	}
 	
 	public void turnDirections() {
@@ -57,13 +64,21 @@ public class Vertex {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Vertex other = (Vertex) obj;
+		Node other = (Node) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
 	}
 
 	@Override

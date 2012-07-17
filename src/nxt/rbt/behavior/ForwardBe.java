@@ -1,12 +1,11 @@
 package nxt.rbt.behavior;
 
-import nxt.rbt.limit.ColorLimits;
-import nxt.rbt.navigation.LabyrinthNavigator;
-import nxt.rbt.navigation.Line;
-import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.navigation.DifferentialPilot;
+import nxt.rbt.limit.ColorLimits;
+import nxt.rbt.navigation.LabyrinthNavigator;
+import nxt.rbt.navigation.Line;
 
 public class ForwardBe extends AbstractBehavior {
 

@@ -1,12 +1,11 @@
 package nxt.rbt.behavior;
 
-import nxt.rbt.limit.ColorLimits;
-import nxt.rbt.limit.NavigationLimits;
-import nxt.rbt.navigation.LabyrinthNavigator;
-import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.navigation.DifferentialPilot;
+import nxt.rbt.limit.ColorLimits;
+import nxt.rbt.limit.NavigationLimits;
+import nxt.rbt.navigation.LabyrinthNavigator;
 
 public class RightSensorBe extends AbstractBehavior {
 	
