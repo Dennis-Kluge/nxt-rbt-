@@ -33,6 +33,14 @@ public class Graph {
 		edgeCounter   = 0;
 	}
 	
+	public Node getLastNode() {
+		return nodes.get(nodes.size()-2);
+	}
+	
+	public Node getCurrentNode() {
+		return nodes.get(nodes.size()-1);
+	}
+	
 	public DirectionStates[] getDirection(float x, float y) {
 		Node node = nodeExists(x, y);
 		if(node != null) {

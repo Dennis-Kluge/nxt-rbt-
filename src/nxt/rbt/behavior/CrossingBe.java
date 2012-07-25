@@ -4,6 +4,7 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.navigation.DifferentialPilot;
 import nxt.rbt.graph.DirectionStates;
+import nxt.rbt.graph.Node;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.limit.NavigationLimits;
 import nxt.rbt.navigation.CrossingCounter;
@@ -56,6 +57,7 @@ public class CrossingBe extends AbstractBehavior{
 				}
 			} while (sc.getCurrentAngle() < NavigationLimits.COMPLETE_ROTATION);
 			navigator.addNode(sc.getDirections());
+			setNodeForDirections(navigator.getLastNode(), navigator.getCurrentNode());
 		}
 		
 		DirectionStates[] states = navigator.getDirections();
@@ -89,6 +91,24 @@ public class CrossingBe extends AbstractBehavior{
 	public void suppress() {
 		
 		
+	}
+	
+	public void setNodeForDirections(Node lasNode, Node currentNode) {
+		// rechts, hinten, links, geradeaus
+		Node[] nodesForDirection = lasNode.getNodesForDirection();
+		switch (lasNode.getCurrentDirection()) {
+		case LEFT:
+			nodesForDirection[2] = currentNode;
+			break;
+		case RIGHT:
+			nodesForDirection[0] = currentNode;
+			break;
+		case FORWARD:
+			nodesForDirection[3] = currentNode;
+			break;
+		default:
+			break;
+		}
 	}
 	
 }

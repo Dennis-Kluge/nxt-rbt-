@@ -1,5 +1,7 @@
 package nxt.rbt.graph;
 
+import lejos.nxt.addon.DIMUGyro.TemperatureUnits;
+
 public class Node {
 	final private String id;
 	final private String name;
@@ -8,6 +10,9 @@ public class Node {
 	private final float y;
 	
 	DirectionStates[] directions = {DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE};
+	
+	Node[] nodesForDirection = new Node[4];
+	Direction currentDirection;
 	
 	boolean isEnding;
 	
@@ -28,10 +33,34 @@ public class Node {
 	
 	public void turnDirections() {
 		for(int i = 0; i < 4; i++) {
+			DirectionStates tmp;
+			DirectionStates tmp2 = null;
 			if (i != 3) {
-				directions[i+1] = directions[i];
+				tmp = directions[i + 1];
+				if(i == 0)
+					directions[i+1] = directions[i];
+				else 
+					directions[i + 1] = tmp2;
+				tmp2 = tmp;
 			} else {
-				directions[0] = directions[i];
+				directions[0] = tmp2;
+			}			
+		}
+	}
+	
+	public void turnNodes() {
+		for(int i = 0; i < 4; i++) {
+			Node tmp;
+			Node tmp2 = null;
+			if (i != 3) {
+				tmp = nodesForDirection[i + 1];
+				if(i == 0)
+					nodesForDirection[i+1] = nodesForDirection[i];
+				else 
+					nodesForDirection[i + 1] = tmp2;
+				tmp2 = tmp;
+			} else {
+				nodesForDirection[0] = tmp2;
 			}			
 		}
 	}
@@ -98,4 +127,19 @@ public class Node {
 		this.isEnding = isEnding;
 	}		
 	
+	public Node[] getNodesForDirection() {
+		return nodesForDirection;
+	}
+	
+	public void setNodesForDirection(Node[] nodes) {
+		nodesForDirection = nodes;
+	}
+	
+	public Direction getCurrentDirection() {
+		return currentDirection;
+	}
+	
+	public void setCurrentDirection(Direction direction) {
+		currentDirection = direction;
+	}
 }

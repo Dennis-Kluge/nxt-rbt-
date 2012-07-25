@@ -23,7 +23,6 @@ public class LabyrinthNavigator {
 		graph = new Graph(outputStream);
 		graph.addEndNode(poseProvider.getPose().getX(), poseProvider.getPose().getY());
 
-		turned = false;
 	}
 
 	public void addPoint() {		
@@ -39,9 +38,14 @@ public class LabyrinthNavigator {
 	}
 	
 	public void turnDirection() {
-		turned = true;
 		for (Node vertex : graph.getVertexes()) {
 			vertex.turnDirections();
+		}
+	}
+	
+	public void turnNodesForDirection() {
+		for (Node vertex : graph.getVertexes()) {
+			vertex.turnNodes();
 		}
 	}
 	
@@ -63,5 +67,13 @@ public class LabyrinthNavigator {
 	
 	public void updateDirectionsForNode(DirectionStates[] states) {
 		graph.updateDirectionsForNode(states, poseProvider.getPose().getX(), poseProvider.getPose().getY());
+	}
+	
+	public Node getLastNode() {
+		return graph.getLastNode();
+	}
+	
+	public Node getCurrentNode() {
+		return graph.getCurrentNode();
 	}
 }

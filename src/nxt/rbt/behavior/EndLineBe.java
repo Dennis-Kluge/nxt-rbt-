@@ -35,6 +35,7 @@ public class EndLineBe extends AbstractBehavior{
 			pilot.rotate(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
 		} while (!isInYellow(s2.readValue()));
 		navigator.turnDirection();
+		navigator.turnNodesForDirection();
 			
 	}
 
