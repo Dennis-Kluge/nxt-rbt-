@@ -11,16 +11,13 @@ public class LabyrinthNavigator {
 
 	private Graph graph;	
 
-	private PoseProvider poseProvider;
-	private OutputStream outputStream;
+	private PoseProvider poseProvider;	
 	
 	boolean turned;
 
-	public LabyrinthNavigator(PoseProvider poseProvider, OutputStream outputStream) {			
-
-		this.poseProvider = poseProvider;
-		this.outputStream = outputStream;
-		graph = new Graph(outputStream);
+	public LabyrinthNavigator(PoseProvider poseProvider) {			
+		this.poseProvider = poseProvider;		
+		graph = new Graph();
 		graph.addEndNode(poseProvider.getPose().getX(), poseProvider.getPose().getY());
 
 	}

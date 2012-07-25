@@ -24,8 +24,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		LCD.drawString("Try to connect...", 0, 0);
-		BTConnection btConn = Bluetooth.waitForConnection();
-		DataOutputStream outputStream = btConn.openDataOutputStream();
+		
 		LCD.drawString("", 0, 0);
 		LCD.drawString("connected", 0, 0);
 		
@@ -34,7 +33,7 @@ public class Main {
 		pilot.setRotateSpeed(NavigationLimits.ROTATE_SPEED);
 		pilot.setTravelSpeed(NavigationLimits.TRAVEL_SPEED);				
 		OdometryPoseProvider poseProvider = new OdometryPoseProvider(pilot);
-		LabyrinthNavigator navigator = new LabyrinthNavigator(poseProvider, outputStream);
+		LabyrinthNavigator navigator = new LabyrinthNavigator(poseProvider);
 		
 		Behavior forwardBe = new ForwardBe(navigator, pilot);
 		Behavior rightBe = new RightSensorBe(navigator, pilot);
