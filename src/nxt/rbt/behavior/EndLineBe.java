@@ -1,7 +1,9 @@
 package nxt.rbt.behavior;
 
+import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
+import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.DifferentialPilot;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.limit.NavigationLimits;
@@ -23,14 +25,17 @@ public class EndLineBe extends AbstractBehavior{
 		
 	@Override
 	public boolean takeControl() {	
-		if ((s1.readValue() > ColorLimits.WHITE_LIMIT || s2.readValue() > ColorLimits.WHITE_LIMIT || s3.readValue() > ColorLimits.WHITE_LIMIT)) 
+		
+		if ((s1.readValue() >= ColorLimits.WHITE_LIMIT || s2.readValue() >= ColorLimits.WHITE_LIMIT || s3.readValue() >= ColorLimits.WHITE_LIMIT)) 
 			return true;
 		else
 			return false;
 	}
 
 	@Override
-	public void action() {	
+	public void action() {
+//		LCD.drawString("End: " +s2.readValue() ,0, 0);
+		RConsole.println("Endline");
 		do {
 			pilot.rotate(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
 		} while (!isInYellow(s2.readValue()));

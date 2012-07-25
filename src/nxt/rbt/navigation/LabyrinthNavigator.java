@@ -1,7 +1,6 @@
 package nxt.rbt.navigation;
 
-import java.io.OutputStream;
-
+import lejos.nxt.LCD;
 import lejos.robotics.localization.PoseProvider;
 import nxt.rbt.graph.DirectionStates;
 import nxt.rbt.graph.Graph;
@@ -27,6 +26,7 @@ public class LabyrinthNavigator {
 	}		
 	
 	public void addNode(DirectionStates[] possibleDirections) {
+//		LCD.drawString("addNode: 1 \n" + poseProvider.getPose().getX() +"\n"+ poseProvider.getPose().getY()+"\n",0, 0);
 		graph.addNode(possibleDirections, poseProvider.getPose().getX(), poseProvider.getPose().getY());
 	}
 	
@@ -55,6 +55,7 @@ public class LabyrinthNavigator {
 	}
 	
 	public DirectionStates[] getDirections() {
+//		LCD.drawString("\n\n\n\n\ngetDir: 1 \n" + poseProvider.getPose().getX() +"\n"+ poseProvider.getPose().getY(),0, 0);
 		DirectionStates[] ret = graph.getDirection(poseProvider.getPose().getX(), poseProvider.getPose().getY());
 		if(ret != null) {
 			return ret;

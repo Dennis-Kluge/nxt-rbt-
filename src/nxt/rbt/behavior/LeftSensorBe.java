@@ -1,5 +1,6 @@
 package nxt.rbt.behavior;
 
+import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.navigation.DifferentialPilot;
@@ -23,7 +24,7 @@ public class LeftSensorBe extends AbstractBehavior{
 	@Override
 	public boolean takeControl() {
 		//LCD.drawString("LeftSensor: \nSensor1: " + s1.readValue() + " \nSensor2: " + s2.readValue() + " \nSensor3: " + s3.readValue(), 0, 0);
-		//LCD.drawString("Left", 0, 200);		
+			
 		if (isInYellow(s3.readValue()) && s1.readValue() < ColorLimits.YELLOW_LIMIT && s2.readValue() < ColorLimits.YELLOW_LIMIT) {
 			return true;
 		} else 
@@ -32,6 +33,7 @@ public class LeftSensorBe extends AbstractBehavior{
 
 	@Override
 	public void action() {
+//		LCD.drawString("Left", 0, 0);	
 		pilot.steer(NavigationLimits.TURN_RATE);
 	}
 

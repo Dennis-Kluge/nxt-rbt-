@@ -3,6 +3,8 @@ package nxt.rbt.graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import lejos.nxt.comm.RConsole;
+
 import nxt.rbt.communication.BluetoothConnector;
 import nxt.rbt.navigation.Line;
 
@@ -18,7 +20,7 @@ public class Graph {
 	
 	private Line line;		
 	
-	private final float NODE_TOLERANCY = 10;
+	private final float NODE_TOLERANCY = 1;
 
 	public Graph() {		
 		this.line = new Line();
@@ -69,18 +71,28 @@ public class Graph {
 		nodes.add(node);
 		
 		// bluetooth messaging
-		String message = currentNode.getId() + " " + node.getId() + " " + distance + ",";
+		String message;
+		if(currentNode == null)
+			message = -1 + " " + node.getId() + " " + distance + ",";
+		else 
+			message = currentNode.getId() + " " + node.getId() + " " + distance + ",";
 		BluetoothConnector.getInstance().sendMessage(message);
 		
 		// prepare next addition
+		nodeCounter++;
 		edgeCounter++;
 		currentNode = node;
 	}
 	
 	public Node nodeExists(float x, float y) {
+		RConsole.println("Ausgabe: aktueller Node: " + x+ " , "+ y);
+//		System.out.println("Ausgabe: aktueller Node: " + x+ " , "+ y);
+		int i= 1;
 		for(Node node : nodes) {
-			if((node.getX() > x + NODE_TOLERANCY || node.getX() < x - NODE_TOLERANCY) 
-			    && (node.getY() > x + NODE_TOLERANCY || node.getY() < x - NODE_TOLERANCY)) {
+			RConsole.println("Ausgabe: node "+i+": "+ node.getX() + " , " + node.getY());
+//			System.out.println("Ausgabe: node "+i+": "+ node.getX() + " , " + node.getY());
+			if((node.getX() + NODE_TOLERANCY > x && node.getX() - NODE_TOLERANCY  < x || node.getX() == x) 
+			    && (node.getY() + NODE_TOLERANCY  > y && node.getY() - NODE_TOLERANCY < y  || node.getY() == y)) {
 				return node;
 			}
 		}
@@ -104,10 +116,15 @@ public class Graph {
 		nodes.add(node);
 		
 		// bluetooth messaging
-		String message = currentNode.getId() + " " + node.getId() + " " + distance + ",";
+		String message = "";
+		if(currentNode == null)
+			message = -1 + " " + node.getId() + " " + distance + ",";
+		else 
+			message = currentNode.getId() + " " + node.getId() + " " + distance + ",";
 		BluetoothConnector.getInstance().sendMessage(message);
 		
 		// prepare next addition
+		nodeCounter++;
 		edgeCounter++;		
 	}
 	

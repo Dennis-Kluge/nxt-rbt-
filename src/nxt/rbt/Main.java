@@ -3,6 +3,7 @@ package nxt.rbt;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
+import lejos.nxt.comm.RConsole;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Arbitrator;
@@ -19,6 +20,7 @@ public class Main {
 
 	public static void main(String[] args) {
 //		BluetoothConnector.getInstance().initialize();
+		RConsole.openBluetooth(40000);
 		
 		Button.ENTER.waitForPressAndRelease();
 		DifferentialPilot pilot = new DifferentialPilot(2.25f, 4.8f, Motor.C, Motor.A);	

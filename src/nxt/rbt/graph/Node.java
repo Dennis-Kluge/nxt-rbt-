@@ -1,6 +1,5 @@
 package nxt.rbt.graph;
 
-import lejos.nxt.addon.DIMUGyro.TemperatureUnits;
 
 public class Node {
 	final private String id;
@@ -12,7 +11,7 @@ public class Node {
 	DirectionStates[] directions = {DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE};
 	
 	Node[] nodesForDirection = new Node[4];
-	Direction currentDirection;
+	Direction currentDirection = Direction.FORWARD;
 	
 	boolean isEnding;
 	

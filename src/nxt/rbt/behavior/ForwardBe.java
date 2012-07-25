@@ -1,7 +1,9 @@
 package nxt.rbt.behavior;
 
+import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
+import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.DifferentialPilot;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.navigation.LabyrinthNavigator;
@@ -26,7 +28,7 @@ public class ForwardBe extends AbstractBehavior {
 	@Override
 	public boolean takeControl() {
 		//LCD.drawString("Forward: \nSensor1: " + s1.readValue() + " \nSensor3: " + s3.readValue(), 0, 0);
-		//LCD.drawString("Forward: " + s2.readValue(), 0, 0);
+		
 		//navigator.logPosition();
 		if (s1.readValue() < ColorLimits.YELLOW_LIMIT && s3.readValue() < ColorLimits.YELLOW_LIMIT ) 
 			return true;
@@ -36,6 +38,8 @@ public class ForwardBe extends AbstractBehavior {
 
 	@Override
 	public void action() {
+		RConsole.println("Ausgabe: Forward: s2: " + s2.readValue() +" , s1: " + s1.readValue() + " , s3: " + s3.readValue());
+//		LCD.drawString("Forward: " + s2.readValue(), 0, 0);
 		navigator.addPoint();
 		pilot.forward();
 	}
