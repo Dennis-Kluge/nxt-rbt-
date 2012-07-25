@@ -11,8 +11,8 @@ public class Graph {
 	private List<Node> nodes;
 	private List<Edge> edges;
 	
-	private Node currentVertex;
-	private int vertexCounter;
+	private Node currentNode;
+	private int nodeCounter;
 
 	private int edgeCounter;
 	
@@ -25,7 +25,7 @@ public class Graph {
 		this.nodes = new ArrayList<Node>();
 		this.edges = new ArrayList<Edge>();
 		
-		vertexCounter = 0;
+		nodeCounter = 0;
 		edgeCounter   = 0;
 	}
 	
@@ -61,20 +61,20 @@ public class Graph {
 		if(exist != null) 
 			node = exist;
 		else
-			node = new Node(Integer.toString(vertexCounter), Integer.toString(vertexCounter), possibleDirections, x, y);
+			node = new Node(Integer.toString(nodeCounter), Integer.toString(nodeCounter), possibleDirections, x, y);
 		
-		Edge edge = new Edge(Integer.toString(edgeCounter), currentVertex, node, distance);
+		Edge edge = new Edge(Integer.toString(edgeCounter), currentNode, node, distance);
 		
 		edges.add(edge);
 		nodes.add(node);
 		
 		// bluetooth messaging
-		String message = currentVertex.getId() + " " + node.getId() + " " + distance + ",";
+		String message = currentNode.getId() + " " + node.getId() + " " + distance + ",";
 		BluetoothConnector.getInstance().sendMessage(message);
 		
 		// prepare next addition
 		edgeCounter++;
-		currentVertex = node;
+		currentNode = node;
 	}
 	
 	public Node nodeExists(float x, float y) {
@@ -96,15 +96,15 @@ public class Graph {
 		if(exist != null) 
 			node = exist;
 		else
-			node = new Node(Integer.toString(vertexCounter), Integer.toString(vertexCounter), x, y);				
+			node = new Node(Integer.toString(nodeCounter), Integer.toString(nodeCounter), x, y);				
 		
-		Edge edge = new Edge(Integer.toString(edgeCounter), currentVertex, node, distance);
+		Edge edge = new Edge(Integer.toString(edgeCounter), currentNode, node, distance);
 		node.setEnding(true);		
 		edges.add(edge);
 		nodes.add(node);
 		
 		// bluetooth messaging
-		String message = currentVertex.getId() + " " + node.getId() + " " + distance + ",";
+		String message = currentNode.getId() + " " + node.getId() + " " + distance + ",";
 		BluetoothConnector.getInstance().sendMessage(message);
 		
 		// prepare next addition
