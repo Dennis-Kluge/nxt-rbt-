@@ -1,10 +1,9 @@
 package nxt.rbt.graph;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import nxt.rbt.communication.BluetoothConnector;
 import nxt.rbt.navigation.Line;
 
 public class Graph {
@@ -17,14 +16,11 @@ public class Graph {
 
 	private int edgeCounter;
 	
-	private Line line;
-	
-	private OutputStream outputStream;
+	private Line line;		
 	
 	private final float NODE_TOLERANCY = 10;
 
-	public Graph(OutputStream outputStream) {
-		this.outputStream = outputStream;
+	public Graph() {		
 		this.line = new Line();
 		this.nodes = new ArrayList<Node>();
 		this.edges = new ArrayList<Edge>();
@@ -65,14 +61,8 @@ public class Graph {
 		nodes.add(node);
 		
 		// bluetooth messaging
-		String message = currentVertex.getId() + " " + node.getId() + " "
-				+ distance + ",";
-		try {
-			outputStream.write(message.getBytes());
-			outputStream.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String message = currentVertex.getId() + " " + node.getId() + " " + distance + ",";
+		BluetoothConnector.getInstance().sendMessage(message);
 		
 		// prepare next addition
 		edgeCounter++;
@@ -106,14 +96,8 @@ public class Graph {
 		nodes.add(node);
 		
 		// bluetooth messaging
-		String message = currentVertex.getId() + " " + node.getId() + " "
-				+ distance + ",";
-		try {
-			outputStream.write(message.getBytes());
-			outputStream.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String message = currentVertex.getId() + " " + node.getId() + " " + distance + ",";
+		BluetoothConnector.getInstance().sendMessage(message);
 		
 		// prepare next addition
 		edgeCounter++;		
