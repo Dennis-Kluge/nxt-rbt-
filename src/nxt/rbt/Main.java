@@ -1,13 +1,8 @@
 package nxt.rbt;
 
-
-import java.io.DataOutputStream;
-
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
-import lejos.nxt.comm.BTConnection;
-import lejos.nxt.comm.Bluetooth;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Arbitrator;
@@ -23,10 +18,7 @@ import nxt.rbt.navigation.LabyrinthNavigator;
 public class Main {
 
 	public static void main(String[] args) {
-		LCD.drawString("Try to connect...", 0, 0);
-		
-		LCD.drawString("", 0, 0);
-		LCD.drawString("connected", 0, 0);
+//		BluetoothConnector.getInstance().initialize();
 		
 		Button.ENTER.waitForPressAndRelease();
 		DifferentialPilot pilot = new DifferentialPilot(2.25f, 4.8f, Motor.C, Motor.A);	
