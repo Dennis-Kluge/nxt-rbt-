@@ -20,7 +20,7 @@ public class Graph {
 	
 	private Line line;		
 	
-	private final float NODE_TOLERANCY = 6;
+	private final float NODE_TOLERANCY = 7;
 
 	public Graph() {		
 		this.line = new Line();

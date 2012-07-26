@@ -22,7 +22,7 @@ public class Main {
 
 	public static void main(String[] args) {
 //		BluetoothConnector.getInstance().initialize();
-		RConsole.openBluetooth(40000);
+		RConsole.openBluetooth(60000);
 		
 		Button.ENTER.waitForPressAndRelease();
 		DifferentialPilot pilot = new DifferentialPilot(2.25f, 4.8f, Motor.C, Motor.A);	

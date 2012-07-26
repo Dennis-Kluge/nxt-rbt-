@@ -44,6 +44,7 @@ public class CrossingBe extends AbstractBehavior{
 		CrossingCounter sc =  new CrossingCounter();
 //		RConsole.println("Crossing: 1 " + navigator.hasNode());
 		hasNode = navigator.hasNode();
+		// rechts, hinten, links, geradeaus
 		if(!hasNode) {
 			// zum scannen der kreuzung - wie viele abzweigungen vorhanden sind 
 			pilot.travel(2.0);
@@ -64,37 +65,47 @@ public class CrossingBe extends AbstractBehavior{
 			} while (sc.getCurrentAngle() < NavigationLimits.COMPLETE_ROTATION);
 			navigator.addNode(sc.getDirections());
 			setNodeForDirections(navigator.getLastNode(), navigator.getCurrentNode());
+			RConsole.println("Ausgabe: node Angelegt: " + navigator.getCurrentNode().getId() + " , rechts: " +navigator.getCurrentNode().getDirections()[0]
+					+" , links:  " + navigator.getCurrentNode().getDirections()[2] + " , gerade: " + navigator.getCurrentNode().getDirections()[3] );
 		}
 		
-		Node node = navigator.getCurrentNode();
-		DirectionStates[] states = navigator.getDirections();
-		RConsole.println("Crossing: 2" + states);
-		if(states != null) {
-			RConsole.println("Crossing: 3" + states[0]+" , " +states[2]+" , "+states[3]);
-			// zum abfahren der kreuzung nach rechts und links
-			if(hasNode)
-				pilot.travel(2.0);
-			if (states[0] == DirectionStates.POSSIBLE) {
-				// right
-				sc.resetCurrentAngle();
-				do {
-					pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE);
-				} while (!isInYellow(s2.readValue()) && sc.getCurrentAngle() < 20);
-				states[0] = DirectionStates.TAKEN;
-				navigator.updateDirectionsForNode(states);
-				node.setCurrentDirection(Direction.RIGHT);
-			} else if (states[2] == DirectionStates.POSSIBLE) {
-				//left
-				sc.resetCurrentAngle();
-				do {
-					pilot.rotate(NavigationLimits.CROSSING_TURN_RATE);
-				} while (!isInYellow(s2.readValue()) && sc.getCurrentAngle() < 20);
-				states[2] = DirectionStates.TAKEN;
-				navigator.updateDirectionsForNode(states);
-				node.setCurrentDirection(Direction.LEFT);
-			} else if(states[3] == DirectionStates.POSSIBLE) {
-				node.setCurrentDirection(Direction.FORWARD);
-				return;
+		Node node = navigator.getNodeForPosition();
+		if(node != null) {
+			DirectionStates[] states = node.getDirections();
+			RConsole.println("Crossing: 2: " + states);
+			if(states != null) {
+				RConsole.println("Crossing: 3: rechts: " + states[0]+" , links:  " +states[2]+" , gerade: "+states[3] +" , " + node.getId());
+				// zum abfahren der kreuzung nach rechts und links
+				if(hasNode)
+					pilot.travel(2.0);
+				if (states[0] == DirectionStates.POSSIBLE) {
+					// right
+					sc.resetCurrentAngle();
+					RConsole.println("Crossing: 4: rechts: " + sc.getCurrentAngle());
+					do {
+						pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE);
+						sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE);
+					} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
+					states[0] = DirectionStates.TAKEN;
+					navigator.updateDirectionsForNode(states);
+					node.setCurrentDirection(Direction.RIGHT);
+				} else if (states[2] == DirectionStates.POSSIBLE) {
+					//left
+					
+					sc.resetCurrentAngle();
+					RConsole.println("Crossing: 4: links: " + sc.getCurrentAngle());
+					do {
+						pilot.rotate(NavigationLimits.CROSSING_TURN_RATE);
+						sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE);
+					} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
+					states[2] = DirectionStates.TAKEN;
+					navigator.updateDirectionsForNode(states);
+					node.setCurrentDirection(Direction.LEFT);
+				} else if(states[3] == DirectionStates.POSSIBLE) {
+					RConsole.println("Crossing: 4: geradeaus: ");
+					node.setCurrentDirection(Direction.FORWARD);
+					return;
+				}
 			}
 		}
 	}

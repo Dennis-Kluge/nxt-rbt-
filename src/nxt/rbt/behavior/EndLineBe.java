@@ -7,6 +7,7 @@ import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.DifferentialPilot;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.limit.NavigationLimits;
+import nxt.rbt.navigation.CrossingCounter;
 import nxt.rbt.navigation.LabyrinthNavigator;
 
 public class EndLineBe extends AbstractBehavior{
@@ -34,12 +35,15 @@ public class EndLineBe extends AbstractBehavior{
 
 	@Override
 	public void action() {
+		CrossingCounter sc = new CrossingCounter();
 		RConsole.println("Ausgabe: Endline: s2: " + s2.readValue() +" , s1: " + s1.readValue() + " , s3: " + s3.readValue());
 //		LCD.drawString("End: " +s2.readValue() ,0, 0);
 		RConsole.println("Endline");
 		do {
+			sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
 			pilot.rotate(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
-		} while (!isInYellow(s2.readValue()));
+			RConsole.println("Ausgabe: Endline drehen: s2: " + s2.readValue() +" , wnkel: " + sc.getCurrentAngle()) ;
+		} while (sc.getCurrentAngle() < 100 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 100));
 		navigator.turnDirection();
 		navigator.turnNodesForDirection();
 			
