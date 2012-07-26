@@ -45,6 +45,7 @@ public class CrossingBe extends AbstractBehavior{
 //		RConsole.println("Crossing: 1 " + navigator.hasNode());
 		hasNode = navigator.hasNode();
 		// rechts, hinten, links, geradeaus
+		RConsole.println("Ausgabe Pose:1 " + navigator.getPose());
 		if(!hasNode) {
 			// zum scannen der kreuzung - wie viele abzweigungen vorhanden sind 
 			pilot.travel(2.0);
@@ -64,18 +65,21 @@ public class CrossingBe extends AbstractBehavior{
 				}
 			} while (sc.getCurrentAngle() < NavigationLimits.COMPLETE_ROTATION);
 			navigator.addNode(sc.getDirections());
+			RConsole.println("Ausgabe Pose:2 " + navigator.getPose());
 			setNodeForDirections(navigator.getLastNode(), navigator.getCurrentNode());
 			RConsole.println("Ausgabe: node Angelegt: " + navigator.getCurrentNode().getId() + " , rechts: " +navigator.getCurrentNode().getDirections()[0]
-					+" , links:  " + navigator.getCurrentNode().getDirections()[2] + " , gerade: " + navigator.getCurrentNode().getDirections()[3] );
+					+" , links:  " + navigator.getCurrentNode().getDirections()[2] + " , gerade: " + navigator.getCurrentNode().getDirections()[3] + " , " + sc.getDirections().hashCode() );
 		}
 		
 		Node node = navigator.getNodeForPosition();
 		if(node != null) {
 			DirectionStates[] states = node.getDirections();
-			RConsole.println("Crossing: 2: " + states);
+			RConsole.println("Crossing: 2: " + states + " , " +  states.hashCode());
+			RConsole.println("Ausgabe Pose3 : " + navigator.getPose());
 			if(states != null) {
 				RConsole.println("Crossing: 3: rechts: " + states[0]+" , links:  " +states[2]+" , gerade: "+states[3] +" , " + node.getId());
 				// zum abfahren der kreuzung nach rechts und links
+				
 				if(hasNode)
 					pilot.travel(2.0);
 				if (states[0] == DirectionStates.POSSIBLE) {
@@ -86,8 +90,8 @@ public class CrossingBe extends AbstractBehavior{
 						pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE);
 						sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE);
 					} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
-					states[0] = DirectionStates.TAKEN;
-					navigator.updateDirectionsForNode(states);
+//					states[0] = DirectionStates.TAKEN;
+//					navigator.updateDirectionsForNode(states);
 					node.setCurrentDirection(Direction.RIGHT);
 				} else if (states[2] == DirectionStates.POSSIBLE) {
 					//left

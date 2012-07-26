@@ -78,4 +78,8 @@ public class LabyrinthNavigator {
 	public Node getNodeForPosition() {
 		return graph.nodeExists(poseProvider.getPose().getX(), poseProvider.getPose().getY());
 	}
+	
+	public float getPose() {
+		return poseProvider.getPose().getHeading();
+	}
 }

@@ -52,5 +52,15 @@ public class Main {
 //		while (true) {
 //			RConsole.println("Ausgabe: Werte: s2: " + s2.readValue() +" , s1: " + s1.readValue() + " , s3: " + s3.readValue());
 //		}
+		
+//		do {
+//			RConsole.println("Ausgabe: Pose wer: " + poseProvider.getPose().getHeading());
+//			pilot.rotate(25);
+//			
+//		} while (true);
+				
+			
+		
+		
 	}
 }

@@ -8,7 +8,7 @@ public class Node {
 	private final float x;
 	private final float y;
 	
-	DirectionStates[] directions = {DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE};
+	DirectionStates[] directions = {DirectionStates.POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE};
 	
 	Node[] nodesForDirection = new Node[4];
 	Direction currentDirection = Direction.FORWARD;
@@ -31,9 +31,9 @@ public class Node {
 	}
 	
 	public void turnDirections() {
+		DirectionStates tmp2 = null;
 		for(int i = 0; i < 4; i++) {
 			DirectionStates tmp;
-			DirectionStates tmp2 = null;
 			if (i != 3) {
 				tmp = directions[i + 1];
 				if(i == 0)
