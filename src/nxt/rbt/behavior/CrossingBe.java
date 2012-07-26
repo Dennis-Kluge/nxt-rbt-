@@ -3,6 +3,7 @@ package nxt.rbt.behavior;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
+import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.DifferentialPilot;
 import nxt.rbt.graph.Direction;
 import nxt.rbt.graph.DirectionStates;
@@ -38,9 +39,10 @@ public class CrossingBe extends AbstractBehavior{
 
 	@Override
 	public void action() {
+		RConsole.println("Ausgabe: Crossing: s2: " + s2.readValue() +" , s1: " + s1.readValue() + " , s3: " + s3.readValue());	
 //		LCD.drawString("Crossing:" ,0, 0);
 		CrossingCounter sc =  new CrossingCounter();
-		LCD.drawString("Crossing: 1 " + navigator.hasNode() ,0, 0);
+//		RConsole.println("Crossing: 1 " + navigator.hasNode());
 		hasNode = navigator.hasNode();
 		if(!hasNode) {
 			// zum scannen der kreuzung - wie viele abzweigungen vorhanden sind 
@@ -66,9 +68,9 @@ public class CrossingBe extends AbstractBehavior{
 		
 		Node node = navigator.getCurrentNode();
 		DirectionStates[] states = navigator.getDirections();
-		//LCD.drawString("Crossing: 2 " + states ,0, 0);
+		RConsole.println("Crossing: 2" + states);
 		if(states != null) {
-			//LCD.drawString("Crossing: 3" + states[0]+"\n" +states[2]+"\n"+states[3] ,0, 0);
+			RConsole.println("Crossing: 3" + states[0]+" , " +states[2]+" , "+states[3]);
 			// zum abfahren der kreuzung nach rechts und links
 			if(hasNode)
 				pilot.travel(2.0);

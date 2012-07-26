@@ -34,6 +34,7 @@ public class EndLineBe extends AbstractBehavior{
 
 	@Override
 	public void action() {
+		RConsole.println("Ausgabe: Endline: s2: " + s2.readValue() +" , s1: " + s1.readValue() + " , s3: " + s3.readValue());
 //		LCD.drawString("End: " +s2.readValue() ,0, 0);
 		RConsole.println("Endline");
 		do {

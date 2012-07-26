@@ -20,7 +20,7 @@ public class Graph {
 	
 	private Line line;		
 	
-	private final float NODE_TOLERANCY = 1;
+	private final float NODE_TOLERANCY = 6;
 
 	public Graph() {		
 		this.line = new Line();
@@ -90,6 +90,7 @@ public class Graph {
 		int i= 1;
 		for(Node node : nodes) {
 			RConsole.println("Ausgabe: node "+i+": "+ node.getX() + " , " + node.getY());
+			i++;
 //			System.out.println("Ausgabe: node "+i+": "+ node.getX() + " , " + node.getY());
 			if((node.getX() + NODE_TOLERANCY > x && node.getX() - NODE_TOLERANCY  < x || node.getX() == x) 
 			    && (node.getY() + NODE_TOLERANCY  > y && node.getY() - NODE_TOLERANCY < y  || node.getY() == y)) {

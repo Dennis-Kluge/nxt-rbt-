@@ -2,7 +2,9 @@ package nxt.rbt;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
+import lejos.nxt.SensorPort;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
@@ -29,6 +31,8 @@ public class Main {
 		OdometryPoseProvider poseProvider = new OdometryPoseProvider(pilot);
 		LabyrinthNavigator navigator = new LabyrinthNavigator(poseProvider);
 		
+		
+		
 		Behavior forwardBe = new ForwardBe(navigator, pilot);
 		Behavior rightBe = new RightSensorBe(navigator, pilot);
 		Behavior leftBe = new LeftSensorBe(navigator, pilot);
@@ -38,6 +42,15 @@ public class Main {
 		Behavior[] bArray = {endBe, forwardBe, crossingBe, rightBe,leftBe };
 		Arbitrator arby = new Arbitrator(bArray);
 		LCD.drawString("Started", 0, 0);
-		arby.start();		
+		arby.start();
+	
+//		LightSensor s1 = new LightSensor(SensorPort.S1);
+//		LightSensor s2 = new LightSensor(SensorPort.S2); 
+//		LightSensor s3 = new LightSensor(SensorPort.S3);
+//		
+//		
+//		while (true) {
+//			RConsole.println("Ausgabe: Werte: s2: " + s2.readValue() +" , s1: " + s1.readValue() + " , s3: " + s3.readValue());
+//		}
 	}
 }

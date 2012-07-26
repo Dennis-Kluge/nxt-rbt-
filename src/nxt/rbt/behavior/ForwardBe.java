@@ -27,10 +27,11 @@ public class ForwardBe extends AbstractBehavior {
 		
 	@Override
 	public boolean takeControl() {
+//		RConsole.println("Ausgabe: Forward: s2: " + s2.readValue() +" , s1: " + s1.readValue() + " , s3: " + s3.readValue());
 		//LCD.drawString("Forward: \nSensor1: " + s1.readValue() + " \nSensor3: " + s3.readValue(), 0, 0);
 		
 		//navigator.logPosition();
-		if (s1.readValue() < ColorLimits.YELLOW_LIMIT && s3.readValue() < ColorLimits.YELLOW_LIMIT ) 
+		if (s1.readValue() < ColorLimits.YELLOW_LIMIT && s3.readValue() < ColorLimits.YELLOW_LIMIT) 
 			return true;
 		else
 			return false;
@@ -38,7 +39,7 @@ public class ForwardBe extends AbstractBehavior {
 
 	@Override
 	public void action() {
-		RConsole.println("Ausgabe: Forward: s2: " + s2.readValue() +" , s1: " + s1.readValue() + " , s3: " + s3.readValue());
+//		RConsole.println("Ausgabe: Forward: s2: " + s2.readValue() +" , s1: " + s1.readValue() + " , s3: " + s3.readValue());
 //		LCD.drawString("Forward: " + s2.readValue(), 0, 0);
 		navigator.addPoint();
 		pilot.forward();
