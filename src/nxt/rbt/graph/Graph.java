@@ -39,7 +39,7 @@ public class Graph {
 		return nodes.get(nodes.size()-1);
 	}
 	
-	public DirectionStates[] getDirection(float x, float y) {
+	public Direction[] getDirection(float x, float y) {
 		Node node = nodeExists(x, y);
 		if(node != null) {
 			return node.getDirections();
@@ -47,14 +47,14 @@ public class Graph {
 		return null;
 	}
 	
-	public void updateDirectionsForNode(DirectionStates[] states, float x, float y) {
+	public void updateDirectionsForNode(Direction[] states, float x, float y) {
 		Node node = nodeExists(x, y);
 		if(node != null) {
 			node.setDirection(states);
 		}
 	}
 	
-	public void addNode(DirectionStates[] possibleDirections, float x, float y) {
+	public void addNode(Direction[] possibleDirections, float x, float y) {
 		float distance = line.getDistance();
 		line.clearLine();
 		// does node exist
@@ -127,6 +127,18 @@ public class Graph {
 		// prepare next addition
 		nodeCounter++;
 		edgeCounter++;		
+	}
+	
+	public boolean isGraphfinished() {
+		for(Node node : nodes) {
+			for(int i = 0; i < node.getDirections().length; i++) {
+				Direction direction = node.getDirections()[i];
+				if(direction.getDirectionState() != DirectionStates.TAKEN) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	public void addPoint(float x, float y) {

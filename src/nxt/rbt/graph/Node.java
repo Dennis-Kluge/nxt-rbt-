@@ -8,10 +8,11 @@ public class Node {
 	private final float x;
 	private final float y;
 	
-	DirectionStates[] directions = {DirectionStates.POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE, DirectionStates.NOT_POSSIBLE};
+	Direction[] directions = new Direction[4];
 	
 	Node[] nodesForDirection = new Node[4];
-	Direction currentDirection = Direction.FORWARD;
+	Directions currentDirection = Directions.FORWARD;
+	private int POSE_TOLERANCY = 30;
 	
 	boolean isEnding;
 	
@@ -22,7 +23,7 @@ public class Node {
 		this.y = y;
 	}
 	
-	public Node(String id, String name, DirectionStates[] directions, float x, float y) {
+	public Node(String id, String name, Direction[] directions, float x, float y) {
 		this.id = id;
 		this.name = name;		
 		this.directions = directions;
@@ -30,46 +31,101 @@ public class Node {
 		this.y = y;
 	}
 	
-	public void turnDirections() {
-		DirectionStates tmp2 = null;
-		for(int i = 0; i < 4; i++) {
-			DirectionStates tmp;
-			if (i != 3) {
-				tmp = directions[i + 1];
-				if(i == 0)
-					directions[i+1] = directions[i];
-				else 
-					directions[i + 1] = tmp2;
-				tmp2 = tmp;
-			} else {
-				directions[0] = tmp2;
-			}			
-		}
-	}
+//	public void turnDirections() {
+//		DirectionStates tmp2 = null;
+//		for(int i = 0; i < 4; i++) {
+//			DirectionStates tmp;
+//			if (i != 3) {
+//				tmp = directions[i + 1];
+//				if(i == 0)
+//					directions[i+1] = directions[i];
+//				else 
+//					directions[i + 1] = tmp2;
+//				tmp2 = tmp;
+//			} else {
+//				directions[0] = tmp2;
+//			}			
+//		}
+//	}
 	
-	public void turnNodes() {
-		for(int i = 0; i < 4; i++) {
-			Node tmp;
-			Node tmp2 = null;
-			if (i != 3) {
-				tmp = nodesForDirection[i + 1];
-				if(i == 0)
-					nodesForDirection[i+1] = nodesForDirection[i];
-				else 
-					nodesForDirection[i + 1] = tmp2;
-				tmp2 = tmp;
-			} else {
-				nodesForDirection[0] = tmp2;
-			}			
-		}
-	}
+//	public void turnNodes() {
+//		for(int i = 0; i < 4; i++) {
+//			Node tmp;
+//			Node tmp2 = null;
+//			if (i != 3) {
+//				tmp = nodesForDirection[i + 1];
+//				if(i == 0)
+//					nodesForDirection[i+1] = nodesForDirection[i];
+//				else 
+//					nodesForDirection[i + 1] = tmp2;
+//				tmp2 = tmp;
+//			} else {
+//				nodesForDirection[0] = tmp2;
+//			}			
+//		}
+//	}
 	
-	public DirectionStates[] getDirections() {
+	public Direction[] getDirections() {
 		return directions;
 	}
 	
-	public void setDirection(DirectionStates[] states) {
-		directions = states;
+	public void setLeftDirectionState(double pose, DirectionStates state) {
+		for (int i = 0; i < directions.length; i++) {
+			double left = pose + 90;
+			if(left > directions[i].getPose() - POSE_TOLERANCY && left < directions[i].getPose() + POSE_TOLERANCY	) {
+				directions[i].setDirectionState(state);
+			}
+		}
+	}
+	
+	public Direction getLeftDirection(double pose) {
+		for (int i = 0; i < directions.length; i++) {
+			double left = pose + 90;
+			if(left > directions[i].getPose() - POSE_TOLERANCY && left < directions[i].getPose() + POSE_TOLERANCY	) {
+				return directions[i];
+			}
+		}
+		return null;
+	}
+	
+	public void setRightDirectionState(double pose, DirectionStates state) {
+		for (int i = 0; i < directions.length; i++) {
+			double right = pose - 90;
+			if(right > directions[i].getPose() - POSE_TOLERANCY && right < directions[i].getPose() + POSE_TOLERANCY	) {
+				directions[i].setDirectionState(state);
+			}
+		}
+	}
+	
+	public Direction getRightDirection(double pose) {
+		for (int i = 0; i < directions.length; i++) {
+			double right = pose - 90;
+			if(right > directions[i].getPose() - POSE_TOLERANCY && right < directions[i].getPose() + POSE_TOLERANCY	) {
+				return directions[i];
+			}
+		}
+		return null;
+	}
+	
+	public void setForwardDirection(double pose, DirectionStates state) {
+		for (int i = 0; i < directions.length; i++) {
+			if(pose > directions[i].getPose() - POSE_TOLERANCY && pose < directions[i].getPose() + POSE_TOLERANCY	) {
+				directions[i].setDirectionState(state);
+			}
+		}
+	}
+	
+	public Direction getForwardDirection(double pose) {
+		for (int i = 0; i < directions.length; i++) {
+			if(pose > directions[i].getPose() - POSE_TOLERANCY && pose < directions[i].getPose() + POSE_TOLERANCY	) {
+				return directions[i];
+			}
+		}
+		return null;
+	}
+	
+	public void setDirection(Direction[] direction) {
+		directions = direction;
 	}
 	
 	public String getId() {
@@ -126,19 +182,19 @@ public class Node {
 		this.isEnding = isEnding;
 	}		
 	
-	public Node[] getNodesForDirection() {
-		return nodesForDirection;
-	}
+//	public Node[] getNodesForDirection() {
+//		return nodesForDirection;
+//	}
 	
-	public void setNodesForDirection(Node[] nodes) {
-		nodesForDirection = nodes;
-	}
+//	public void setNodesForDirection(Node[] nodes) {
+//		nodesForDirection = nodes;
+//	}
 	
-	public Direction getCurrentDirection() {
-		return currentDirection;
-	}
+//	public Directions getCurrentDirection() {
+//		return currentDirection;
+//	}
 	
-	public void setCurrentDirection(Direction direction) {
-		currentDirection = direction;
-	}
+//	public void setCurrentDirection(Directions direction) {
+//		currentDirection = direction;
+//	}
 }

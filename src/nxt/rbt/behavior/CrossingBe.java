@@ -3,7 +3,6 @@ package nxt.rbt.behavior;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.comm.RConsole;
-import nxt.rbt.graph.Direction;
 import nxt.rbt.graph.DirectionStates;
 import nxt.rbt.graph.Node;
 import nxt.rbt.limit.NavigationLimits;
@@ -54,64 +53,73 @@ public class CrossingBe extends AbstractBehavior{
 				if(isInYellow(s2.readValue()) && sc.getCurrentAngle() > (sc.getAngleLastLine() + 20)) {
 					int currentAngle = sc.getCurrentAngle();
 					if(currentAngle >= 0 && currentAngle <= 20 || currentAngle > 300) {
-						sc.setForward(DirectionStates.POSSIBLE);
+						sc.setForward(pilot.getPose(), DirectionStates.POSSIBLE);
 					} else if(currentAngle > 20 && currentAngle <= 100) {
-						sc.setRight(DirectionStates.POSSIBLE);
-					} else if(currentAngle> 190 && currentAngle <= 300) {
-						sc.setLeft(DirectionStates.POSSIBLE);
+						sc.setRight(pilot.getPose(), DirectionStates.POSSIBLE);
+					} else if(currentAngle > 100 && currentAngle <= 210) {
+						sc.setBackward(pilot.getPose(), DirectionStates.TAKEN);
+					} else if(currentAngle> 210 && currentAngle <= 300) {
+						sc.setLeft(pilot.getPose(), DirectionStates.POSSIBLE);
 					}
 					sc.addCount();
 				}
 			} while (sc.getCurrentAngle() < NavigationLimits.COMPLETE_ROTATION);
 			navigator.addNode(sc.getDirections());
 			RConsole.println("Ausgabe Pose:2 " + navigator.getPose());
-			setNodeForDirections(navigator.getLastNode(), navigator.getCurrentNode());
+//			setNodeForDirections(navigator.getLastNode(), navigator.getCurrentNode());
 			RConsole.println("Ausgabe: node Angelegt: " + navigator.getCurrentNode().getId() + " , rechts: " +navigator.getCurrentNode().getDirections()[0]
 					+" , links:  " + navigator.getCurrentNode().getDirections()[2] + " , gerade: " + navigator.getCurrentNode().getDirections()[3] + " , " + sc.getDirections().hashCode() );
 		}
 		
 		Node node = navigator.getNodeForPosition();
 		if(node != null) {
-			DirectionStates[] states = node.getDirections();
-			RConsole.println("Crossing: 2: " + states + " , " +  states.hashCode());
-			RConsole.println("Ausgabe Pose3 : " + navigator.getPose());
-			if(states != null) {
-				RConsole.println("Crossing: 3: rechts: " + states[0]+" , links:  " +states[2]+" , gerade: "+states[3] +" , " + node.getId());
+//			Direction[] states = node.getDirections();
+//			RConsole.println("Crossing: 2: " + states + " , " +  states.hashCode());
+//			RConsole.println("Ausgabe Pose3 : " + navigator.getPose());
+//			if(states != null) {
+//				RConsole.println("Crossing: 3: rechts: " + states[0]+" , links:  " +states[2]+" , gerade: "+states[3] +" , " + node.getId());
 				// zum abfahren der kreuzung nach rechts und links
 				
 				if(hasNode)
 					pilot.travel(2.0);
-				if (states[0] == DirectionStates.POSSIBLE) {
+				
+				
+				double currentPose = pilot.getPose();
+				
+				if (node.getRightDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
 					// right
 					sc.resetCurrentAngle();
-					RConsole.println("Crossing: 4: rechts: " + sc.getCurrentAngle());
+//					RConsole.println("Crossing: 4: rechts: " + sc.getCurrentAngle());
 					do {
 						pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE);
 						sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE);
 					} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
-//					states[0] = DirectionStates.TAKEN;
-//					navigator.updateDirectionsForNode(states);
-					node.setCurrentDirection(Direction.RIGHT);
-				} else if (states[2] == DirectionStates.POSSIBLE) {
+					node.setRightDirectionState(currentPose, DirectionStates.TAKEN);
+//					node.setCurrentDirection(Directions.RIGHT);
+				} else if (node.getLeftDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
 					//left
 					
 					sc.resetCurrentAngle();
-					RConsole.println("Crossing: 4: links: " + sc.getCurrentAngle());
+//					RConsole.println("Crossing: 4: links: " + sc.getCurrentAngle());
 					do {
 						pilot.rotate(NavigationLimits.CROSSING_TURN_RATE);
 						sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE);
 					} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
-					states[2] = DirectionStates.TAKEN;
-					navigator.updateDirectionsForNode(states);
-					node.setCurrentDirection(Direction.LEFT);
-				} else if(states[3] == DirectionStates.POSSIBLE) {
-					RConsole.println("Crossing: 4: geradeaus: ");
-					node.setCurrentDirection(Direction.FORWARD);
+					node.setLeftDirectionState(currentPose, DirectionStates.TAKEN);
+//					node.setCurrentDirection(Directions.LEFT);
+				} else if(node.getForwardDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
+//					RConsole.println("Crossing: 4: geradeaus: ");
+					node.setForwardDirection(currentPose, DirectionStates.TAKEN);
+//					node.setCurrentDirection(Directions.FORWARD);
 					return;
+				} else if(navigator.isGraphfinished()) {
+					// hier kommt die navigation zum start
+				} else {
+					// hier kommt die navigation zum noch nicht fertigen knoten
 				}
 			}
 		}
-	}
+//	}
 
 	@Override
 	public void suppress() {
@@ -119,22 +127,22 @@ public class CrossingBe extends AbstractBehavior{
 		
 	}
 	
-	public void setNodeForDirections(Node lasNode, Node currentNode) {
-		// rechts, hinten, links, geradeaus
-		Node[] nodesForDirection = lasNode.getNodesForDirection();
-		switch (lasNode.getCurrentDirection()) {
-		case LEFT:
-			nodesForDirection[2] = currentNode;
-			break;
-		case RIGHT:
-			nodesForDirection[0] = currentNode;
-			break;
-		case FORWARD:
-			nodesForDirection[3] = currentNode;
-			break;
-		default:
-			break;
-		}
-	}
+//	public void setNodeForDirections(Node lasNode, Node currentNode) {
+//		// rechts, hinten, links, geradeaus
+//		Node[] nodesForDirection = lasNode.getNodesForDirection();
+//		switch (lasNode.getCurrentDirection()) {
+//		case LEFT:
+//			nodesForDirection[2] = currentNode;
+//			break;
+//		case RIGHT:
+//			nodesForDirection[0] = currentNode;
+//			break;
+//		case FORWARD:
+//			nodesForDirection[3] = currentNode;
+//			break;
+//		default:
+//			break;
+//		}
+//	}
 	
 }

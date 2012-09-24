@@ -1,5 +1,6 @@
 package nxt.rbt.navigation;
 
+import nxt.rbt.graph.Direction;
 import nxt.rbt.graph.DirectionStates;
 
 public class CrossingCounter {
@@ -7,9 +8,10 @@ public class CrossingCounter {
 	int count;
 	int currentAngle;
 	int angleLastLine;
-	DirectionStates left;
-	DirectionStates right;
-	DirectionStates forward;
+	Direction left;
+	Direction right;
+	Direction forward;
+	Direction backward;
 	
 	public CrossingCounter() {
 		count =  0;
@@ -42,33 +44,25 @@ public class CrossingCounter {
 		return angleLastLine;
 	}
 	
-	public DirectionStates[] getDirections() {
+	public Direction[] getDirections() {
 		// rechts, hinten, links, geradeaus
-		DirectionStates[] directions = {right,DirectionStates.TAKEN,left,forward};
+		Direction[] directions = {right,backward,left,forward};
 		return directions;
 	}
 
-	public DirectionStates getLeft() {
-		return left;
+	public void setLeft(double pose, DirectionStates left) {
+		this.left = new Direction(pose, left);
 	}
 
-	public void setLeft(DirectionStates left) {
-		this.left = left;
+	public void setRight(double pose, DirectionStates right) {
+		this.right = new Direction(pose, right);
 	}
 
-	public DirectionStates getRight() {
-		return right;
+	public void setForward(double pose, DirectionStates forward) {
+		this.forward = new Direction(pose, forward);
 	}
-
-	public void setRight(DirectionStates right) {
-		this.right = right;
-	}
-
-	public DirectionStates getForward() {
-		return forward;
-	}
-
-	public void setForward(DirectionStates forward) {
-		this.forward = forward;
+	
+	public void setBackward(double pose, DirectionStates backward) {
+		this.backward = new Direction(pose, backward);
 	}
 }

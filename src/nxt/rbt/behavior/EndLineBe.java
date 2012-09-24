@@ -43,8 +43,8 @@ public class EndLineBe extends AbstractBehavior{
 			pilot.rotate(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
 //			RConsole.println("Ausgabe: Endline drehen: s2: " + s2.readValue() +" , wnkel: " + sc.getCurrentAngle()) ;
 		} while (sc.getCurrentAngle() < 100 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 100));
-		navigator.turnDirection();
-		navigator.turnNodesForDirection();
+//		navigator.turnDirection();
+//		navigator.turnNodesForDirection();
 			
 	}
 

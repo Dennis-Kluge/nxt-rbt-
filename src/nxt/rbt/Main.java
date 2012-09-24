@@ -2,12 +2,9 @@ package nxt.rbt;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
-import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
-import lejos.nxt.SensorPort;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.localization.OdometryPoseProvider;
-import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import nxt.rbt.behavior.CrossingBe;
@@ -33,12 +30,14 @@ public class Main {
 		LabyrinthNavigator navigator = new LabyrinthNavigator(poseProvider);
 		
 		int rot = 1;
-		while(rot <= 10) {
+		while(rot <= 12) {
 			RConsole.println("Rotieren: " + rot);
-			pilot.rotate(360*0.9);
+			pilot.rotate(60);
+			LCD.drawString("Pos: 1 "  +poseProvider.getPose().getHeading() +"\n"+ pilot.getPose()+ "\n", 0, 0);
 			rot ++;
+			Button.ENTER.waitForPressAndRelease();
 		}
-		
+		Button.ENTER.waitForPressAndRelease();
 		
 		Behavior forwardBe = new ForwardBe(navigator, pilot);
 		Behavior rightBe = new RightSensorBe(navigator, pilot);
@@ -48,8 +47,8 @@ public class Main {
 //		Behavior[] bArray = {endBe,crossingBe, forwardBe, rightBe,leftBe};
 		Behavior[] bArray = {endBe, forwardBe, crossingBe, rightBe,leftBe };
 		Arbitrator arby = new Arbitrator(bArray);
-		LCD.drawString("Started", 0, 0);
-//		arby.start();
+//		LCD.drawString("Started", 0, 0);
+		arby.start();
 	
 //		LightSensor s1 = new LightSensor(SensorPort.S1);
 //		LightSensor s2 = new LightSensor(SensorPort.S2); 
@@ -62,7 +61,7 @@ public class Main {
 		
 //		do {
 //			RConsole.println("Ausgabe: Pose wer: " + poseProvider.getPose().getHeading());
-//			pilot.rotate(25);
+//			pilot.rotate(25*0.9);
 //			
 //		} while (true);
 				

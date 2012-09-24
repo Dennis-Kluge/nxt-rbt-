@@ -18,7 +18,7 @@ public class NavigationPilotPose extends DifferentialPilot{
 
 	@Override
 	public void rotate(double angle) {
-		pose = angle * 0.9;
+		pose += angle;
 		super.rotate(angle*0.9);
 	}
 
@@ -30,7 +30,14 @@ public class NavigationPilotPose extends DifferentialPilot{
 	}
 
 	public double getPose() {
-		return pose;
+		double ret;
+		int temp = (int)pose / 360;
+		ret = pose - temp*360;
+		if(ret < 0) 
+			ret = 360 - ret;
+		if(ret == 0)
+			ret = 360;
+		return ret;
 	}
 	
 }
