@@ -33,6 +33,7 @@ public class FinishBe extends AbstractBehavior{
 	@Override
 	public void action() {
 		CrossingCounter sc = new CrossingCounter();
+		navigator.addEndNode(true);
 		if(navigator.isGraphfinished()) {
 			// navigation zum start
 		} else {

@@ -16,7 +16,7 @@ public class LabyrinthNavigator {
 	public LabyrinthNavigator(PoseProvider poseProvider) {			
 		this.poseProvider = poseProvider;		
 		graph = new Graph();
-		graph.addEndNode(poseProvider.getPose().getX(), poseProvider.getPose().getY());
+		graph.addEndNode(poseProvider.getPose().getX(), poseProvider.getPose().getY(), true, false);
 
 	}
 
@@ -29,8 +29,8 @@ public class LabyrinthNavigator {
 		graph.addNode(possibleDirections, poseProvider.getPose().getX(), poseProvider.getPose().getY());
 	}
 	
-	public void addEndNode() {
-		graph.addEndNode(poseProvider.getPose().getX(), poseProvider.getPose().getY());	
+	public void addEndNode(boolean isFinishNode) {
+		graph.addEndNode(poseProvider.getPose().getX(), poseProvider.getPose().getY(), false, isFinishNode);	
 	}
 	
 //	public void turnDirection() {

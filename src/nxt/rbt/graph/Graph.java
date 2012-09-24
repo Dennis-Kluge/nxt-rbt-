@@ -100,7 +100,7 @@ public class Graph {
 		return null;
 	}
 	
-	public void addEndNode(float x, float y) {
+	public void addEndNode(float x, float y, boolean isStartNode, boolean isFinishNode) {
 		float distance = line.getDistance();
 		line.clearLine();
 		// does node exist
@@ -112,7 +112,9 @@ public class Graph {
 			node = new Node(Integer.toString(nodeCounter), Integer.toString(nodeCounter), x, y);				
 		
 		Edge edge = new Edge(Integer.toString(edgeCounter), currentNode, node, distance);
-		node.setEnding(true);		
+		node.setEnding(true);
+		node.setStartNode(isStartNode);
+		node.setFinishNode(isFinishNode);
 		edges.add(edge);
 		nodes.add(node);
 		
@@ -131,10 +133,12 @@ public class Graph {
 	
 	public boolean isGraphfinished() {
 		for(Node node : nodes) {
-			for(int i = 0; i < node.getDirections().length; i++) {
-				Direction direction = node.getDirections()[i];
-				if(direction.getDirectionState() != DirectionStates.TAKEN) {
-					return false;
+			if(!node.isEnding) {
+				for(int i = 0; i < node.getDirections().length; i++) {
+					Direction direction = node.getDirections()[i];
+					if(direction.getDirectionState() != DirectionStates.TAKEN) {
+						return false;
+					}
 				}
 			}
 		}

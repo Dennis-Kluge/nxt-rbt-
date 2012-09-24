@@ -15,6 +15,8 @@ public class Node {
 	private int POSE_TOLERANCY = 30;
 	
 	boolean isEnding;
+	boolean isStartNode;
+	boolean isFinishNode;
 	
 	public Node(String id, String name, float x, float y) {
 		this.id = id;
@@ -180,6 +182,22 @@ public class Node {
 
 	public void setEnding(boolean isEnding) {
 		this.isEnding = isEnding;
+	}
+
+	public boolean isStartNode() {
+		return isStartNode;
+	}
+
+	public void setStartNode(boolean isStartNode) {
+		this.isStartNode = isStartNode;
+	}
+
+	public boolean isFinishNode() {
+		return isFinishNode;
+	}
+
+	public void setFinishNode(boolean isFinishNode) {
+		this.isFinishNode = isFinishNode;
 	}		
 	
 //	public Node[] getNodesForDirection() {
