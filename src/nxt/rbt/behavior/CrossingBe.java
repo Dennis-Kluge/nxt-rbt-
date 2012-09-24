@@ -1,16 +1,15 @@
 package nxt.rbt.behavior;
 
-import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.comm.RConsole;
-import lejos.robotics.navigation.DifferentialPilot;
 import nxt.rbt.graph.Direction;
 import nxt.rbt.graph.DirectionStates;
 import nxt.rbt.graph.Node;
 import nxt.rbt.limit.NavigationLimits;
 import nxt.rbt.navigation.CrossingCounter;
 import nxt.rbt.navigation.LabyrinthNavigator;
+import nxt.rbt.navigation.NavigationPilotPose;
 
 public class CrossingBe extends AbstractBehavior{
 
@@ -19,7 +18,7 @@ public class CrossingBe extends AbstractBehavior{
 	LightSensor s3;
 	boolean hasNode = false;
 	
-	public CrossingBe(LabyrinthNavigator navigator, DifferentialPilot pilot) {
+	public CrossingBe(LabyrinthNavigator navigator, NavigationPilotPose pilot) {
 		super(navigator, pilot);
 		s1 = new LightSensor(SensorPort.S1);
 		s2 = new LightSensor(SensorPort.S2);

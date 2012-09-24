@@ -1,13 +1,11 @@
 package nxt.rbt.behavior;
 
-import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
-import lejos.nxt.comm.RConsole;
-import lejos.robotics.navigation.DifferentialPilot;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.navigation.LabyrinthNavigator;
 import nxt.rbt.navigation.Line;
+import nxt.rbt.navigation.NavigationPilotPose;
 
 public class ForwardBe extends AbstractBehavior {
 
@@ -16,7 +14,7 @@ public class ForwardBe extends AbstractBehavior {
 	LightSensor s3;	
 	Line line;
 	
-	public ForwardBe(LabyrinthNavigator navigator, DifferentialPilot pilot) {
+	public ForwardBe(LabyrinthNavigator navigator, NavigationPilotPose pilot) {
 		super(navigator, pilot);
 		s1 = new LightSensor(SensorPort.S1);
 		s2 = new LightSensor(SensorPort.S2);

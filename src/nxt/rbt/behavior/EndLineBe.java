@@ -1,14 +1,13 @@
 package nxt.rbt.behavior;
 
-import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.comm.RConsole;
-import lejos.robotics.navigation.DifferentialPilot;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.limit.NavigationLimits;
 import nxt.rbt.navigation.CrossingCounter;
 import nxt.rbt.navigation.LabyrinthNavigator;
+import nxt.rbt.navigation.NavigationPilotPose;
 
 public class EndLineBe extends AbstractBehavior{
 
@@ -16,7 +15,7 @@ public class EndLineBe extends AbstractBehavior{
 	LightSensor s2;
 	LightSensor s3;
 	
-	public EndLineBe(LabyrinthNavigator navigator, DifferentialPilot pilot) {
+	public EndLineBe(LabyrinthNavigator navigator, NavigationPilotPose pilot) {
 		super(navigator, pilot);
 		s1 = new LightSensor(SensorPort.S1);
 		s2 = new LightSensor(SensorPort.S2);

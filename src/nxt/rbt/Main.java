@@ -17,20 +17,27 @@ import nxt.rbt.behavior.LeftSensorBe;
 import nxt.rbt.behavior.RightSensorBe;
 import nxt.rbt.limit.NavigationLimits;
 import nxt.rbt.navigation.LabyrinthNavigator;
+import nxt.rbt.navigation.NavigationPilotPose;
 
 public class Main {
 
 	public static void main(String[] args) {
 //		BluetoothConnector.getInstance().initialize();
-		RConsole.openBluetooth(60000);
+//		RConsole.openBluetooth(60000);
 		
 		Button.ENTER.waitForPressAndRelease();
-		DifferentialPilot pilot = new DifferentialPilot(2.25f, 4.8f, Motor.C, Motor.A);	
+		NavigationPilotPose pilot = new NavigationPilotPose(2.25f, 4.8f, Motor.C, Motor.A);
 		pilot.setRotateSpeed(NavigationLimits.ROTATE_SPEED);
 		pilot.setTravelSpeed(NavigationLimits.TRAVEL_SPEED);				
 		OdometryPoseProvider poseProvider = new OdometryPoseProvider(pilot);
 		LabyrinthNavigator navigator = new LabyrinthNavigator(poseProvider);
 		
+		int rot = 1;
+		while(rot <= 10) {
+			RConsole.println("Rotieren: " + rot);
+			pilot.rotate(360*0.9);
+			rot ++;
+		}
 		
 		
 		Behavior forwardBe = new ForwardBe(navigator, pilot);
@@ -42,7 +49,7 @@ public class Main {
 		Behavior[] bArray = {endBe, forwardBe, crossingBe, rightBe,leftBe };
 		Arbitrator arby = new Arbitrator(bArray);
 		LCD.drawString("Started", 0, 0);
-		arby.start();
+//		arby.start();
 	
 //		LightSensor s1 = new LightSensor(SensorPort.S1);
 //		LightSensor s2 = new LightSensor(SensorPort.S2); 
