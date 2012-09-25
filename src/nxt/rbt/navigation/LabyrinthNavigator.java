@@ -85,4 +85,20 @@ public class LabyrinthNavigator {
 	public boolean isGraphfinished() {
 		return graph.isGraphfinished();
 	}
+	
+	public Node getNodeToFinish() {
+		return graph.getNodeToFinish();
+	}
+	
+	public Graph getGraph() {
+		return graph;
+	}
+	
+	public Node getStartNode() {
+		return graph.getStartNode();
+	}
+	
+	public Node getFinishNode() {
+		return graph.getFinishNode();
+	}
 }

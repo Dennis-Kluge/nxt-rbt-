@@ -14,9 +14,9 @@ public class Node {
 	Directions currentDirection = Directions.FORWARD;
 	private int POSE_TOLERANCY = 30;
 	
-	boolean isEnding;
-	boolean isStartNode;
-	boolean isFinishNode;
+	private boolean isEnding;
+	private boolean isStartNode;
+	private boolean isFinishNode;
 	
 	public Node(String id, String name, float x, float y) {
 		this.id = id;

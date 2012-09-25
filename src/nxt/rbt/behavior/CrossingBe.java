@@ -3,6 +3,7 @@ package nxt.rbt.behavior;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.comm.RConsole;
+import nxt.rbt.graph.DijkstraAlgorithm;
 import nxt.rbt.graph.DirectionStates;
 import nxt.rbt.graph.Node;
 import nxt.rbt.limit.NavigationLimits;
@@ -112,10 +113,24 @@ public class CrossingBe extends AbstractBehavior{
 					node.setForwardDirection(currentPose, DirectionStates.TAKEN);
 //					node.setCurrentDirection(Directions.FORWARD);
 					return;
-				} else if(navigator.isGraphfinished()) {
-					// hier kommt die navigation zum start
 				} else {
-					// hier kommt die navigation zum noch nicht fertigen knoten
+					DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
+					alg.execute(navigator.getNodeForPosition());
+					if(navigator.isGraphfinished()) {
+						// hier kommt die navigation zum start
+						alg.getPath(navigator.getStartNode());
+						
+					} else {
+						Node nodeToFinish = navigator.getNodeToFinish();
+						if(nodeToFinish != null) {
+							alg.getPath(nodeToFinish);
+							
+							// hier kommt die navigation zum noch nicht fertigen knoten
+						} else {
+							// hier kommt die navigation zum start
+							alg.getPath(navigator.getStartNode());
+						}
+					}
 				}
 			}
 		}

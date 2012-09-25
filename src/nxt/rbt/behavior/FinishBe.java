@@ -2,6 +2,7 @@ package nxt.rbt.behavior;
 
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
+import nxt.rbt.graph.DijkstraAlgorithm;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.limit.NavigationLimits;
 import nxt.rbt.navigation.CrossingCounter;
@@ -35,6 +36,9 @@ public class FinishBe extends AbstractBehavior{
 		CrossingCounter sc = new CrossingCounter();
 		navigator.addEndNode(true);
 		if(navigator.isGraphfinished()) {
+			DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
+			alg.execute(navigator.getNodeForPosition());
+			alg.getPath(navigator.getStartNode());
 			// navigation zum start
 		} else {
 			do {

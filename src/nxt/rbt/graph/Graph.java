@@ -133,7 +133,7 @@ public class Graph {
 	
 	public boolean isGraphfinished() {
 		for(Node node : nodes) {
-			if(!node.isEnding) {
+			if(!node.isEnding()) {
 				for(int i = 0; i < node.getDirections().length; i++) {
 					Direction direction = node.getDirections()[i];
 					if(direction.getDirectionState() != DirectionStates.TAKEN) {
@@ -143,6 +143,20 @@ public class Graph {
 			}
 		}
 		return true;
+	}
+	
+	public Node getNodeToFinish() {
+		for(Node node : nodes) {
+			if(!node.isEnding()) {
+				for(int i = 0; i < node.getDirections().length; i++) {
+					Direction direction = node.getDirections()[i];
+					if(direction.getDirectionState() == DirectionStates.POSSIBLE) {
+						return node;
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 	public void addPoint(float x, float y) {
@@ -155,5 +169,23 @@ public class Graph {
 
 	public List<Edge> getEdges() {
 		return edges;
+	}
+
+	public Node getStartNode() {
+		for(Node node : nodes) {
+			if(node.isStartNode()) {
+				return node;
+			}
+		}
+		return null;
+	}
+
+	public Node getFinishNode() {
+		for(Node node : nodes) {
+			if(node.isFinishNode()) {
+				return node;
+			}
+		}
+		return null;
 	}	
 }

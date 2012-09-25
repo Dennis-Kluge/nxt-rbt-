@@ -122,7 +122,7 @@ public class DijkstraAlgorithm {
 	  }
 
 	
-	  public LinkedList<Node> reverseList(LinkedList<Node> list) {
+	  private LinkedList<Node> reverseList(LinkedList<Node> list) {
 		  LinkedList<Node> path = new LinkedList<Node>();
 		  for(int i = 0; i < list.size(); i++) {
 			  path.add(list.get(list.size()-i));
