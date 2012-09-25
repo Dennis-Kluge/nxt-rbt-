@@ -2,9 +2,18 @@ package nxt.rbt.graph;
 
 public class Direction {
 
-	DirectionStates directionStates = DirectionStates.UNKNOWN;
+	DirectionStates directionStates;
 	double pose;
+	Edge edge;
 	
+	public Edge getEdge() {
+		return edge;
+	}
+
+	public void setEdge(Edge edge) {
+		this.edge = edge;
+	}
+
 	public Direction (double pose, DirectionStates directionState){
 		this.pose = pose;
 		this.directionStates = directionState;

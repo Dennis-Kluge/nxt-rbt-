@@ -35,11 +35,15 @@ public class FinishBe extends AbstractBehavior{
 	public void action() {
 		CrossingCounter sc = new CrossingCounter();
 		navigator.addEndNode(true);
-		if(navigator.isGraphfinished()) {
-			DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
-			alg.execute(navigator.getNodeForPosition());
-			alg.getPath(navigator.getStartNode());
-			// navigation zum start
+//		if(navigator.isGraphfinished()) {
+//			DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
+//			alg.execute(navigator.getNodeForPosition());
+//			navigator.setPath(alg.getPath(navigator.getStartNode()));
+//			navigator.setNavigateToNode(true);
+//			// navigation zum start
+//		} else {
+		if(navigator.isNavigateToFinish()) {
+			pilot.stop();
 		} else {
 			do {
 				sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);

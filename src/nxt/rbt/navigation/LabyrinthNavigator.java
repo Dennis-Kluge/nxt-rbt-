@@ -1,7 +1,11 @@
 package nxt.rbt.navigation;
 
+import java.util.LinkedList;
+
 import lejos.robotics.localization.PoseProvider;
+import lejos.robotics.navigation.DestinationUnreachableException;
 import nxt.rbt.graph.Direction;
+import nxt.rbt.graph.Edge;
 import nxt.rbt.graph.Graph;
 import nxt.rbt.graph.Node;
 
@@ -12,14 +16,59 @@ public class LabyrinthNavigator {
 	private PoseProvider poseProvider;	
 	
 	boolean turned;
+	
+	private LinkedList<Node> path;
+	
+	int currentPosNode;
+	
+	boolean navigateToNode;
+	
+	boolean navigateToFinish;
+
+	
 
 	public LabyrinthNavigator(PoseProvider poseProvider) {			
 		this.poseProvider = poseProvider;		
 		graph = new Graph();
 		graph.addEndNode(poseProvider.getPose().getX(), poseProvider.getPose().getY(), true, false);
-
+		path = new LinkedList<Node>();
+		navigateToNode = false;
+		navigateToFinish = false;
 	}
 
+	public boolean isNavigateToFinish() {
+		return navigateToFinish;
+	}
+
+	public void setNavigateToFinish(boolean navigateToFinish) {
+		this.navigateToFinish = navigateToFinish;
+	}
+	
+	public int getCurrentPosNode() {
+		return currentPosNode;
+	}
+
+	public void incrementCurrentPosNode() {
+		this.currentPosNode++;
+	}
+
+	public boolean isNavigateToNode() {
+		return navigateToNode;
+	}
+
+	public void setNavigateToNode(boolean navigateToNode) {
+		this.navigateToNode = navigateToNode;
+		currentPosNode = 0;
+	}
+
+	public LinkedList<Node> getPath() {
+		return path;
+	}
+
+	public void setPath(LinkedList<Node> path) {
+		this.path = path;
+	}
+	
 	public void addPoint() {		
 		graph.addPoint(poseProvider.getPose().getX(), poseProvider.getPose().getY());		
 	}		
@@ -100,5 +149,22 @@ public class LabyrinthNavigator {
 	
 	public Node getFinishNode() {
 		return graph.getFinishNode();
+	}
+	
+	public Edge getCurrentEdge() {
+		return graph.getCurrentEdge();
+	}
+
+	public Direction getDirectionToDrive(Node currentNode) {
+		Node node = getNodeForPosition();
+		Direction[] directions = node.getDirections();
+		for(int i = 0; i < directions.length; i++) {
+			Edge edge = directions[i].getEdge();
+			if(edge != null && edge.getSource().getId().equals(currentNode.getId()) || edge.getDestination().getId().equals(currentNode.getId())) {
+				return directions[i];
+			}
+		}
+		return null;
+		
 	}
 }

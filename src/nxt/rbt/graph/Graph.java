@@ -39,6 +39,10 @@ public class Graph {
 		return nodes.get(nodes.size()-1);
 	}
 	
+	public Edge getCurrentEdge() {
+		return edges.get(edges.size()-1);
+	}
+	
 	public Direction[] getDirection(float x, float y) {
 		Node node = nodeExists(x, y);
 		if(node != null) {
@@ -67,6 +71,7 @@ public class Graph {
 		
 		Edge edge = new Edge(Integer.toString(edgeCounter), currentNode, node, distance);
 		
+		possibleDirections[1].edge = edge;
 		edges.add(edge);
 		nodes.add(node);
 		
@@ -115,6 +120,7 @@ public class Graph {
 		node.setEnding(true);
 		node.setStartNode(isStartNode);
 		node.setFinishNode(isFinishNode);
+		
 		edges.add(edge);
 		nodes.add(node);
 		
@@ -128,7 +134,10 @@ public class Graph {
 		
 		// prepare next addition
 		nodeCounter++;
-		edgeCounter++;		
+		edgeCounter++;
+		if(isStartNode) {
+			currentNode = node;
+		}
 	}
 	
 	public boolean isGraphfinished() {

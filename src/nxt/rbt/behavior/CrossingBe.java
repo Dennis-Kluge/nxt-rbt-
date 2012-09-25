@@ -4,6 +4,7 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.comm.RConsole;
 import nxt.rbt.graph.DijkstraAlgorithm;
+import nxt.rbt.graph.Direction;
 import nxt.rbt.graph.DirectionStates;
 import nxt.rbt.graph.Node;
 import nxt.rbt.limit.NavigationLimits;
@@ -110,36 +111,105 @@ public class CrossingBe extends AbstractBehavior{
 //					node.setCurrentDirection(Directions.LEFT);
 				} else if(node.getForwardDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
 //					RConsole.println("Crossing: 4: geradeaus: ");
+					pilot.travel(2.0);
 					node.setForwardDirection(currentPose, DirectionStates.TAKEN);
 //					node.setCurrentDirection(Directions.FORWARD);
 					return;
 				} else {
-					DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
-					alg.execute(navigator.getNodeForPosition());
-					if(navigator.isGraphfinished()) {
-						// hier kommt die navigation zum start
-						alg.getPath(navigator.getStartNode());
-						
+					if(navigator.isNavigateToNode() || navigator.isNavigateToFinish()) {
+						if(navigator.getCurrentPosNode() < navigator.getPath().size()) {
+							Node currentNode = navigator.getPath().get(navigator.getCurrentPosNode());
+							Direction direction = navigator.getDirectionToDrive(currentNode);
+							driveToDirection(direction);
+							if (navigator.getCurrentPosNode() >= navigator.getPath().size() -1) {
+								driveToDirection(direction);
+								if(currentNode.isStartNode()) {
+									pilot.travel(4.0);
+									sc.resetCurrentAngle();
+									do {
+										sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
+										pilot.rotate(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
+	//									RConsole.println("Ausgabe: Endline drehen: s2: " + s2.readValue() +" , wnkel: " + sc.getCurrentAngle()) ;
+									} while (sc.getCurrentAngle() < 100 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 100));
+									DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
+									alg.execute(navigator.getStartNode());
+									navigator.setPath(alg.getPath(navigator.getFinishNode()));
+									navigator.setNavigateToFinish(true);
+								} else {
+									navigator.setNavigateToNode(false);
+								}
+						}
 					} else {
-						Node nodeToFinish = navigator.getNodeToFinish();
-						if(nodeToFinish != null) {
-							alg.getPath(nodeToFinish);
-							
-							// hier kommt die navigation zum noch nicht fertigen knoten
-						} else {
+						DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
+						alg.execute(navigator.getNodeForPosition());
+						if(navigator.isGraphfinished()) {
 							// hier kommt die navigation zum start
-							alg.getPath(navigator.getStartNode());
+							navigator.setPath(alg.getPath(navigator.getStartNode()));
+							navigator.setNavigateToNode(true);
+							Node currentNode = navigator.getPath().get(navigator.getCurrentPosNode());
+							Direction direction = navigator.getDirectionToDrive(currentNode);
+							driveToDirection(direction);
+						
+						} else {
+							Node nodeToFinish = navigator.getNodeToFinish();
+							if(nodeToFinish != null) {
+								navigator.setPath(alg.getPath(nodeToFinish));
+								navigator.setNavigateToNode(true);
+								Node currentNode = navigator.getPath().get(navigator.getCurrentPosNode());
+								Direction direction = navigator.getDirectionToDrive(currentNode);
+								driveToDirection(direction);
+								// hier kommt die navigation zum noch nicht fertigen knoten
+							} else {
+								// hier kommt die navigation zum start
+								navigator.setPath(alg.getPath(navigator.getStartNode()));
+								navigator.setNavigateToNode(true);
+								Node currentNode = navigator.getPath().get(navigator.getCurrentPosNode());
+								Direction direction = navigator.getDirectionToDrive(currentNode);
+								driveToDirection(direction);
+							}
 						}
 					}
 				}
 			}
 		}
-//	}
+	}
 
 	@Override
 	public void suppress() {
 		
 		
+	}
+	
+	public void driveToDirection(Direction direction) {
+		CrossingCounter sc =  new CrossingCounter();
+		Node node = navigator.getNodeForPosition();
+		if (node.getRightDirection(direction.getPose()) != null) {
+			// right
+			sc.resetCurrentAngle();
+//			RConsole.println("Crossing: 4: rechts: " + sc.getCurrentAngle());
+			do {
+				pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE);
+				sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE);
+			} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
+			navigator.incrementCurrentPosNode();
+//			node.setCurrentDirection(Directions.RIGHT);
+		} else if (node.getLeftDirection(direction.getPose()) != null) {
+			//left
+			sc.resetCurrentAngle();
+//			RConsole.println("Crossing: 4: links: " + sc.getCurrentAngle());
+			do {
+				pilot.rotate(NavigationLimits.CROSSING_TURN_RATE);
+				sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE);
+			} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
+			navigator.incrementCurrentPosNode();
+//			node.setCurrentDirection(Directions.LEFT);
+		} else if(node.getForwardDirection(direction.getPose()) != null) {
+//			RConsole.println("Crossing: 4: geradeaus: ");
+//			node.setCurrentDirection(Directions.FORWARD);
+			pilot.travel(2.0);
+			navigator.incrementCurrentPosNode();
+			return;
+		}
 	}
 	
 //	public void setNodeForDirections(Node lasNode, Node currentNode) {
