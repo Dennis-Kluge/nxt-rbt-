@@ -93,6 +93,7 @@ public class Graph {
 		RConsole.println("Ausgabe: aktueller Node: " + x+ " , "+ y);
 //		System.out.println("Ausgabe: aktueller Node: " + x+ " , "+ y);
 		int i= 1;
+		RConsole.println("Ausgabe: Anzahl Nodes: " + nodes.size());
 		for(Node node : nodes) {
 			RConsole.println("Ausgabe: node "+i+": "+ node.getX() + " , " + node.getY());
 			i++;

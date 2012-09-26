@@ -1,5 +1,6 @@
 package nxt.rbt.navigation;
 
+import lejos.nxt.comm.RConsole;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.DifferentialPilot;
 
@@ -18,6 +19,7 @@ public class NavigationPilotPose extends DifferentialPilot{
 
 	@Override
 	public void rotate(double angle) {
+		RConsole.println("Ausgabe: rotate: " + angle);
 		pose += angle;
 		super.rotate(angle*0.9);
 	}

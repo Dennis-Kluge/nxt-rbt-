@@ -1,5 +1,7 @@
 package nxt.rbt.graph;
 
+import lejos.nxt.comm.RConsole;
+
 
 public class Node {
 	final private String id;
@@ -83,7 +85,7 @@ public class Node {
 	public Direction getLeftDirection(double pose) {
 		for (int i = 0; i < directions.length; i++) {
 			double left = pose + 90;
-			if(left > directions[i].getPose() - POSE_TOLERANCY && left < directions[i].getPose() + POSE_TOLERANCY	) {
+			if(directions[i] != null && left > directions[i].getPose() - POSE_TOLERANCY && left < directions[i].getPose() + POSE_TOLERANCY	) {
 				return directions[i];
 			}
 		}
@@ -102,7 +104,7 @@ public class Node {
 	public Direction getRightDirection(double pose) {
 		for (int i = 0; i < directions.length; i++) {
 			double right = pose - 90;
-			if(right > directions[i].getPose() - POSE_TOLERANCY && right < directions[i].getPose() + POSE_TOLERANCY	) {
+			if(directions[i] != null && right > directions[i].getPose() - POSE_TOLERANCY && right < directions[i].getPose() + POSE_TOLERANCY	) {
 				return directions[i];
 			}
 		}
@@ -119,7 +121,7 @@ public class Node {
 	
 	public Direction getForwardDirection(double pose) {
 		for (int i = 0; i < directions.length; i++) {
-			if(pose > directions[i].getPose() - POSE_TOLERANCY && pose < directions[i].getPose() + POSE_TOLERANCY	) {
+			if(directions[i] != null && pose > directions[i].getPose() - POSE_TOLERANCY && pose < directions[i].getPose() + POSE_TOLERANCY	) {
 				return directions[i];
 			}
 		}

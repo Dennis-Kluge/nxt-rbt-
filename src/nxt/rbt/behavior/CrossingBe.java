@@ -45,7 +45,7 @@ public class CrossingBe extends AbstractBehavior{
 //		RConsole.println("Crossing: 1 " + navigator.hasNode());
 		hasNode = navigator.hasNode();
 		// rechts, hinten, links, geradeaus
-		RConsole.println("Ausgabe Pose:1 " + navigator.getPose());
+		RConsole.println("Ausgabe: Pose:1 " + navigator.getPose());
 		if(!hasNode) {
 			// zum scannen der kreuzung - wie viele abzweigungen vorhanden sind 
 			pilot.travel(2.0);
@@ -81,14 +81,16 @@ public class CrossingBe extends AbstractBehavior{
 //			if(states != null) {
 //				RConsole.println("Crossing: 3: rechts: " + states[0]+" , links:  " +states[2]+" , gerade: "+states[3] +" , " + node.getId());
 				// zum abfahren der kreuzung nach rechts und links
-				
+				RConsole.println("Ausgabe: node bekannt: 1");
 				if(hasNode)
 					pilot.travel(2.0);
 				
-				
+				RConsole.println("Ausgabe: node bekannt: 2");
 				double currentPose = pilot.getPose();
 				
-				if (node.getRightDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
+				RConsole.println("Ausgabe: node bekannt: 3");
+				if (node.getRightDirection(currentPose)!= null && node.getRightDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
+					RConsole.println("Ausgabe: node bekannt: 4");
 					// right
 					sc.resetCurrentAngle();
 //					RConsole.println("Crossing: 4: rechts: " + sc.getCurrentAngle());
@@ -98,9 +100,9 @@ public class CrossingBe extends AbstractBehavior{
 					} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
 					node.setRightDirectionState(currentPose, DirectionStates.TAKEN);
 //					node.setCurrentDirection(Directions.RIGHT);
-				} else if (node.getLeftDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
+				} else if (node.getLeftDirection(currentPose) != null && node.getLeftDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
 					//left
-					
+					RConsole.println("Ausgabe: node bekannt: 5");
 					sc.resetCurrentAngle();
 //					RConsole.println("Crossing: 4: links: " + sc.getCurrentAngle());
 					do {
@@ -109,21 +111,27 @@ public class CrossingBe extends AbstractBehavior{
 					} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
 					node.setLeftDirectionState(currentPose, DirectionStates.TAKEN);
 //					node.setCurrentDirection(Directions.LEFT);
-				} else if(node.getForwardDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
+				} else if(node.getForwardDirection(currentPose) != null && node.getForwardDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
 //					RConsole.println("Crossing: 4: geradeaus: ");
+					RConsole.println("Ausgabe: node bekannt: 6");
 					pilot.travel(2.0);
 					node.setForwardDirection(currentPose, DirectionStates.TAKEN);
 //					node.setCurrentDirection(Directions.FORWARD);
 					return;
 				} else {
+					RConsole.println("Ausgabe: node bekannt: 7");
 					if(navigator.isNavigateToNode() || navigator.isNavigateToFinish()) {
+						RConsole.println("Ausgabe: node bekannt: 8");
 						if(navigator.getCurrentPosNode() < navigator.getPath().size()) {
+							RConsole.println("Ausgabe: node bekannt: 9");
 							Node currentNode = navigator.getPath().get(navigator.getCurrentPosNode());
 							Direction direction = navigator.getDirectionToDrive(currentNode);
 							driveToDirection(direction);
 							if (navigator.getCurrentPosNode() >= navigator.getPath().size() -1) {
+								RConsole.println("Ausgabe: node bekannt: 10");
 								driveToDirection(direction);
 								if(currentNode.isStartNode()) {
+									RConsole.println("Ausgabe: node bekannt: 11");
 									pilot.travel(4.0);
 									sc.resetCurrentAngle();
 									do {
@@ -131,18 +139,22 @@ public class CrossingBe extends AbstractBehavior{
 										pilot.rotate(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
 	//									RConsole.println("Ausgabe: Endline drehen: s2: " + s2.readValue() +" , wnkel: " + sc.getCurrentAngle()) ;
 									} while (sc.getCurrentAngle() < 100 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 100));
+									RConsole.println("Ausgabe: node bekannt: 12");
 									DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
 									alg.execute(navigator.getStartNode());
 									navigator.setPath(alg.getPath(navigator.getFinishNode()));
 									navigator.setNavigateToFinish(true);
 								} else {
+									RConsole.println("Ausgabe: node bekannt: 13");
 									navigator.setNavigateToNode(false);
 								}
 						}
 					} else {
+						RConsole.println("Ausgabe: node bekannt: 14");
 						DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
 						alg.execute(navigator.getNodeForPosition());
 						if(navigator.isGraphfinished()) {
+							RConsole.println("Ausgabe: node bekannt: 15");
 							// hier kommt die navigation zum start
 							navigator.setPath(alg.getPath(navigator.getStartNode()));
 							navigator.setNavigateToNode(true);
@@ -151,8 +163,10 @@ public class CrossingBe extends AbstractBehavior{
 							driveToDirection(direction);
 						
 						} else {
+							RConsole.println("Ausgabe: node bekannt: 16");
 							Node nodeToFinish = navigator.getNodeToFinish();
 							if(nodeToFinish != null) {
+								RConsole.println("Ausgabe: node bekannt: 17");
 								navigator.setPath(alg.getPath(nodeToFinish));
 								navigator.setNavigateToNode(true);
 								Node currentNode = navigator.getPath().get(navigator.getCurrentPosNode());
@@ -160,6 +174,7 @@ public class CrossingBe extends AbstractBehavior{
 								driveToDirection(direction);
 								// hier kommt die navigation zum noch nicht fertigen knoten
 							} else {
+								RConsole.println("Ausgabe: node bekannt: 18");
 								// hier kommt die navigation zum start
 								navigator.setPath(alg.getPath(navigator.getStartNode()));
 								navigator.setNavigateToNode(true);

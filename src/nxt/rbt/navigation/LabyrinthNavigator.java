@@ -71,7 +71,7 @@ public class LabyrinthNavigator {
 	}
 	
 	public void addPoint() {	
-		RConsole.println("X: " + poseProvider.getPose().getX() + " , Y: " +poseProvider.getPose().getY()+"\n" );
+		RConsole.println("Ausgabe: X: " + poseProvider.getPose().getX() + " , Y: " +poseProvider.getPose().getY()+"\n" );
 		graph.addPoint(poseProvider.getPose().getX(), poseProvider.getPose().getY());		
 	}		
 	
