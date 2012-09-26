@@ -2,6 +2,7 @@ package nxt.rbt.navigation;
 
 import java.util.LinkedList;
 
+import lejos.nxt.comm.RConsole;
 import lejos.robotics.localization.PoseProvider;
 import lejos.robotics.navigation.DestinationUnreachableException;
 import nxt.rbt.graph.Direction;
@@ -69,7 +70,8 @@ public class LabyrinthNavigator {
 		this.path = path;
 	}
 	
-	public void addPoint() {		
+	public void addPoint() {	
+		RConsole.println("X: " + poseProvider.getPose().getX() + " , Y: " +poseProvider.getPose().getY()+"\n" );
 		graph.addPoint(poseProvider.getPose().getX(), poseProvider.getPose().getY());		
 	}		
 	

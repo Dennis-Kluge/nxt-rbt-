@@ -33,7 +33,8 @@ public class RightSensorBe extends AbstractBehavior {
 	@Override
 	public void action() {
 //		LCD.drawString("Right", 0, 0);
-		pilot.steer(-1 * NavigationLimits.TURN_RATE);
+//		pilot.steer(-1 * NavigationLimits.TURN_RATE);
+		pilot.rotate(-1*NavigationLimits.CROSSING_TURN_RATE);
 	}
 
 	@Override

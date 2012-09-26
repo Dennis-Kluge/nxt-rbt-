@@ -20,7 +20,7 @@ public class Main {
 
 	public static void main(String[] args) {
 //		BluetoothConnector.getInstance().initialize();
-//		RConsole.openBluetooth(60000);
+		RConsole.openBluetooth(60000);
 		
 		Button.ENTER.waitForPressAndRelease();
 		NavigationPilotPose pilot = new NavigationPilotPose(2.25f, 4.8f, Motor.C, Motor.A);
@@ -29,15 +29,15 @@ public class Main {
 		OdometryPoseProvider poseProvider = new OdometryPoseProvider(pilot);
 		LabyrinthNavigator navigator = new LabyrinthNavigator(poseProvider);
 		
-		int rot = 1;
-		while(rot <= 12) {
-			RConsole.println("Rotieren: " + rot);
-			pilot.rotate(60);
-			LCD.drawString("Pos: 1 "  +poseProvider.getPose().getHeading() +"\n"+ pilot.getPose()+ "\n", 0, 0);
-			rot ++;
-			Button.ENTER.waitForPressAndRelease();
-		}
-		Button.ENTER.waitForPressAndRelease();
+//		int rot = 1;
+//		while(rot <= 12) {
+//			RConsole.println("Rotieren: " + rot);
+//			pilot.rotate(60);
+//			LCD.drawString("Pos: 1 "  +poseProvider.getPose().getHeading() +"\n"+ pilot.getPose()+ "\n", 0, 0);
+//			rot ++;
+//			Button.ENTER.waitForPressAndRelease();
+//		}
+//		Button.ENTER.waitForPressAndRelease();
 		
 		Behavior forwardBe = new ForwardBe(navigator, pilot);
 		Behavior rightBe = new RightSensorBe(navigator, pilot);

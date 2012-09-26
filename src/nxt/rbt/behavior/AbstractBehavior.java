@@ -18,4 +18,21 @@ public abstract class AbstractBehavior implements Behavior {
 	protected boolean isInYellow(int value) {
 		return (value > ColorLimits.YELLOW_LIMIT && value < ColorLimits.MAX_YELLOW_LIMIT); 
 	}
+
+	public boolean takeControl() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void action() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void suppress() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }
