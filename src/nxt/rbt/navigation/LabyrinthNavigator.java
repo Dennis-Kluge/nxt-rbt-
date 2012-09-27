@@ -2,9 +2,8 @@ package nxt.rbt.navigation;
 
 import java.util.LinkedList;
 
-import lejos.nxt.comm.RConsole;
 import lejos.robotics.localization.PoseProvider;
-import lejos.robotics.navigation.DestinationUnreachableException;
+import nxt.rbt.communication.BluetoothConnector;
 import nxt.rbt.graph.Direction;
 import nxt.rbt.graph.Edge;
 import nxt.rbt.graph.Graph;
@@ -71,30 +70,20 @@ public class LabyrinthNavigator {
 	}
 	
 	public void addPoint() {	
-		RConsole.println("Ausgabe: X: " + poseProvider.getPose().getX() + " , Y: " +poseProvider.getPose().getY()+"\n" );
+		BluetoothConnector.getInstance().sendMessage(poseProvider.getPose().getX() + " " + poseProvider.getPose().getY() + " " + "point,");
 		graph.addPoint(poseProvider.getPose().getX(), poseProvider.getPose().getY());		
 	}		
 	
 	public void addNode(Direction[] possibleDirections) {
-//		LCD.drawString("addNode: 1 \n" + poseProvider.getPose().getX() +"\n"+ poseProvider.getPose().getY()+"\n",0, 0);
+		BluetoothConnector.getInstance().sendMessage(poseProvider.getPose().getX() + " " + poseProvider.getPose().getY() + " " + "node,");
 		graph.addNode(possibleDirections, poseProvider.getPose().getX(), poseProvider.getPose().getY());
 	}
 	
 	public void addEndNode(boolean isFinishNode) {
+		BluetoothConnector.getInstance().sendMessage(poseProvider.getPose().getX() + " " + poseProvider.getPose().getY() + " " + "node,");
 		graph.addEndNode(poseProvider.getPose().getX(), poseProvider.getPose().getY(), false, isFinishNode);	
 	}
 	
-//	public void turnDirection() {
-//		for (Node vertex : graph.getVertexes()) {
-//			vertex.turnDirections();
-//		}
-//	}
-	
-//	public void turnNodesForDirection() {
-//		for (Node vertex : graph.getVertexes()) {
-//			vertex.turnNodes();
-//		}
-//	}
 	
 	public boolean hasNode() {
 		if(graph.nodeExists(poseProvider.getPose().getX(), poseProvider.getPose().getY()) != null) {
@@ -105,7 +94,6 @@ public class LabyrinthNavigator {
 	}
 	
 	public Direction[] getDirections() {
-//		LCD.drawString("\n\n\n\n\ngetDir: 1 \n" + poseProvider.getPose().getX() +"\n"+ poseProvider.getPose().getY(),0, 0);
 		Direction[] ret = graph.getDirection(poseProvider.getPose().getX(), poseProvider.getPose().getY());
 		if(ret != null) {
 			return ret;
@@ -167,6 +155,5 @@ public class LabyrinthNavigator {
 			}
 		}
 		return null;
-		
 	}
 }

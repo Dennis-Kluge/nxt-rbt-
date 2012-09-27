@@ -1,8 +1,5 @@
 package nxt.rbt.graph;
 
-import lejos.nxt.comm.RConsole;
-
-
 public class Node {
 	final private String id;
 	final private String name;
@@ -35,39 +32,6 @@ public class Node {
 		this.y = y;
 	}
 	
-//	public void turnDirections() {
-//		DirectionStates tmp2 = null;
-//		for(int i = 0; i < 4; i++) {
-//			DirectionStates tmp;
-//			if (i != 3) {
-//				tmp = directions[i + 1];
-//				if(i == 0)
-//					directions[i+1] = directions[i];
-//				else 
-//					directions[i + 1] = tmp2;
-//				tmp2 = tmp;
-//			} else {
-//				directions[0] = tmp2;
-//			}			
-//		}
-//	}
-	
-//	public void turnNodes() {
-//		for(int i = 0; i < 4; i++) {
-//			Node tmp;
-//			Node tmp2 = null;
-//			if (i != 3) {
-//				tmp = nodesForDirection[i + 1];
-//				if(i == 0)
-//					nodesForDirection[i+1] = nodesForDirection[i];
-//				else 
-//					nodesForDirection[i + 1] = tmp2;
-//				tmp2 = tmp;
-//			} else {
-//				nodesForDirection[0] = tmp2;
-//			}			
-//		}
-//	}
 	
 	public Direction[] getDirections() {
 		return directions;
@@ -76,7 +40,7 @@ public class Node {
 	public void setLeftDirectionState(double pose, DirectionStates state) {
 		for (int i = 0; i < directions.length; i++) {
 			double left = pose + 90;
-			if(left > directions[i].getPose() - POSE_TOLERANCY && left < directions[i].getPose() + POSE_TOLERANCY	) {
+			if(directions[i] != null && left > directions[i].getPose() - POSE_TOLERANCY && left < directions[i].getPose() + POSE_TOLERANCY	) {
 				directions[i].setDirectionState(state);
 			}
 		}
@@ -84,7 +48,12 @@ public class Node {
 	
 	public Direction getLeftDirection(double pose) {
 		for (int i = 0; i < directions.length; i++) {
-			double left = pose + 90;
+			double left = 0;
+			if(pose >90) {
+				left = pose - 270;
+			} else if(pose < 90) {
+				left = pose + 90;
+			}
 			if(directions[i] != null && left > directions[i].getPose() - POSE_TOLERANCY && left < directions[i].getPose() + POSE_TOLERANCY	) {
 				return directions[i];
 			}
@@ -95,7 +64,7 @@ public class Node {
 	public void setRightDirectionState(double pose, DirectionStates state) {
 		for (int i = 0; i < directions.length; i++) {
 			double right = pose - 90;
-			if(right > directions[i].getPose() - POSE_TOLERANCY && right < directions[i].getPose() + POSE_TOLERANCY	) {
+			if(directions[i] != null && right > directions[i].getPose() - POSE_TOLERANCY && right < directions[i].getPose() + POSE_TOLERANCY	) {
 				directions[i].setDirectionState(state);
 			}
 		}
@@ -103,7 +72,12 @@ public class Node {
 	
 	public Direction getRightDirection(double pose) {
 		for (int i = 0; i < directions.length; i++) {
-			double right = pose - 90;
+			double right = 0;
+			if(pose >90) {
+				right = pose - 90;
+			} else if(pose < 90) {
+				right = pose + 270;
+			}
 			if(directions[i] != null && right > directions[i].getPose() - POSE_TOLERANCY && right < directions[i].getPose() + POSE_TOLERANCY	) {
 				return directions[i];
 			}
@@ -113,7 +87,7 @@ public class Node {
 	
 	public void setForwardDirection(double pose, DirectionStates state) {
 		for (int i = 0; i < directions.length; i++) {
-			if(pose > directions[i].getPose() - POSE_TOLERANCY && pose < directions[i].getPose() + POSE_TOLERANCY	) {
+			if(directions[i] != null && pose > directions[i].getPose() - POSE_TOLERANCY && pose < directions[i].getPose() + POSE_TOLERANCY	) {
 				directions[i].setDirectionState(state);
 			}
 		}
@@ -201,20 +175,4 @@ public class Node {
 	public void setFinishNode(boolean isFinishNode) {
 		this.isFinishNode = isFinishNode;
 	}		
-	
-//	public Node[] getNodesForDirection() {
-//		return nodesForDirection;
-//	}
-	
-//	public void setNodesForDirection(Node[] nodes) {
-//		nodesForDirection = nodes;
-//	}
-	
-//	public Directions getCurrentDirection() {
-//		return currentDirection;
-//	}
-	
-//	public void setCurrentDirection(Directions direction) {
-//		currentDirection = direction;
-//	}
 }

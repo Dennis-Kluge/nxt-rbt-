@@ -2,7 +2,6 @@ package nxt.rbt.behavior;
 
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
-import nxt.rbt.graph.DijkstraAlgorithm;
 import nxt.rbt.limit.ColorLimits;
 import nxt.rbt.limit.NavigationLimits;
 import nxt.rbt.navigation.CrossingCounter;
@@ -24,10 +23,9 @@ public class FinishBe extends AbstractBehavior{
 		
 	@Override
 	public boolean takeControl() {	
-		
-		if ((s1.readValue() <= ColorLimits.BLACK_LIMIT || s2.readValue() <= ColorLimits.BLACK_LIMIT || s3.readValue() <= ColorLimits.BLACK_LIMIT)) 
+		if ((s1.readValue() <= ColorLimits.BLACK_LIMIT && s2.readValue() <= ColorLimits.BLACK_LIMIT && s3.readValue() <= ColorLimits.BLACK_LIMIT)) {
 			return true;
-		else
+		} else
 			return false;
 	}
 
@@ -35,23 +33,13 @@ public class FinishBe extends AbstractBehavior{
 	public void action() {
 		CrossingCounter sc = new CrossingCounter();
 		navigator.addEndNode(true);
-//		if(navigator.isGraphfinished()) {
-//			DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
-//			alg.execute(navigator.getNodeForPosition());
-//			navigator.setPath(alg.getPath(navigator.getStartNode()));
-//			navigator.setNavigateToNode(true);
-//			// navigation zum start
-//		} else {
 		if(navigator.isNavigateToFinish()) {
 			pilot.stop();
 		} else {
 			do {
 				sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
 				pilot.rotate(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
-//				RConsole.println("Ausgabe: Endline drehen: s2: " + s2.readValue() +" , wnkel: " + sc.getCurrentAngle()) ;
 			} while (sc.getCurrentAngle() < 100 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 100));
-//			navigator.turnDirection();
-//			navigator.turnNodesForDirection();
 		}
 		
 			

@@ -2,7 +2,6 @@ package nxt.rbt.behavior;
 
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
-import lejos.nxt.comm.RConsole;
 import nxt.rbt.graph.DijkstraAlgorithm;
 import nxt.rbt.graph.Direction;
 import nxt.rbt.graph.DirectionStates;
@@ -28,24 +27,19 @@ public class CrossingBe extends AbstractBehavior{
 		
 	@Override
 	public boolean takeControl() {
-		
 		if ((isInYellow(s2.readValue()) && (isInYellow(s1.readValue()) || isInYellow(s3.readValue()))) ||
 				(isInYellow(s3.readValue()) && isInYellow(s1.readValue())) && 
-				(isInYellow(s2.readValue()) || !isInYellow(s2.readValue()))) 
+				(isInYellow(s2.readValue()) || !isInYellow(s2.readValue()))) {
 			return true;
-		else
+		} else
 			return false;
 	}
 
 	@Override
 	public void action() {
-		RConsole.println("Ausgabe: Crossing: s2: " + s2.readValue() +" , s1: " + s1.readValue() + " , s3: " + s3.readValue());	
-//		LCD.drawString("Crossing:" ,0, 0);
 		CrossingCounter sc =  new CrossingCounter();
-//		RConsole.println("Crossing: 1 " + navigator.hasNode());
 		hasNode = navigator.hasNode();
 		// rechts, hinten, links, geradeaus
-		RConsole.println("Ausgabe: Pose:1 " + navigator.getPose());
 		if(!hasNode) {
 			// zum scannen der kreuzung - wie viele abzweigungen vorhanden sind 
 			pilot.travel(2.0);
@@ -65,96 +59,64 @@ public class CrossingBe extends AbstractBehavior{
 					}
 					sc.addCount();
 				}
-			} while (sc.getCurrentAngle() < NavigationLimits.COMPLETE_ROTATION);
+			} while (sc.getCurrentAngle() < NavigationLimits.COMPLETE_ROTATION /*|| sc.getCurrentAngle() >= NavigationLimits.COMPLETE_ROTATION && !isInYellow(s2.readValue())*/);
 			navigator.addNode(sc.getDirections());
-			RConsole.println("Ausgabe Pose:2 " + navigator.getPose());
-//			setNodeForDirections(navigator.getLastNode(), navigator.getCurrentNode());
-			RConsole.println("Ausgabe: node Angelegt: " + navigator.getCurrentNode().getId() + " , rechts: " +navigator.getCurrentNode().getDirections()[0]
-					+" , links:  " + navigator.getCurrentNode().getDirections()[2] + " , gerade: " + navigator.getCurrentNode().getDirections()[3] + " , " + sc.getDirections().hashCode() );
 		}
 		
 		Node node = navigator.getNodeForPosition();
 		if(node != null) {
-//			Direction[] states = node.getDirections();
-//			RConsole.println("Crossing: 2: " + states + " , " +  states.hashCode());
-//			RConsole.println("Ausgabe Pose3 : " + navigator.getPose());
-//			if(states != null) {
-//				RConsole.println("Crossing: 3: rechts: " + states[0]+" , links:  " +states[2]+" , gerade: "+states[3] +" , " + node.getId());
-				// zum abfahren der kreuzung nach rechts und links
-				RConsole.println("Ausgabe: node bekannt: 1");
 				if(hasNode)
 					pilot.travel(2.0);
 				
-				RConsole.println("Ausgabe: node bekannt: 2");
 				double currentPose = pilot.getPose();
 				
-				RConsole.println("Ausgabe: node bekannt: 3");
 				if (node.getRightDirection(currentPose)!= null && node.getRightDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
-					RConsole.println("Ausgabe: node bekannt: 4");
 					// right
 					sc.resetCurrentAngle();
-//					RConsole.println("Crossing: 4: rechts: " + sc.getCurrentAngle());
 					do {
 						pilot.rotate(-1 * NavigationLimits.CROSSING_TURN_RATE);
 						sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE);
 					} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
 					node.setRightDirectionState(currentPose, DirectionStates.TAKEN);
-//					node.setCurrentDirection(Directions.RIGHT);
 				} else if (node.getLeftDirection(currentPose) != null && node.getLeftDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
 					//left
-					RConsole.println("Ausgabe: node bekannt: 5");
 					sc.resetCurrentAngle();
-//					RConsole.println("Crossing: 4: links: " + sc.getCurrentAngle());
 					do {
 						pilot.rotate(NavigationLimits.CROSSING_TURN_RATE);
 						sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE);
 					} while (sc.getCurrentAngle() < 20 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 20));
 					node.setLeftDirectionState(currentPose, DirectionStates.TAKEN);
-//					node.setCurrentDirection(Directions.LEFT);
 				} else if(node.getForwardDirection(currentPose) != null && node.getForwardDirection(currentPose).getDirectionState() == DirectionStates.POSSIBLE) {
-//					RConsole.println("Crossing: 4: geradeaus: ");
-					RConsole.println("Ausgabe: node bekannt: 6");
 					pilot.travel(2.0);
 					node.setForwardDirection(currentPose, DirectionStates.TAKEN);
-//					node.setCurrentDirection(Directions.FORWARD);
 					return;
 				} else {
-					RConsole.println("Ausgabe: node bekannt: 7");
 					if(navigator.isNavigateToNode() || navigator.isNavigateToFinish()) {
-						RConsole.println("Ausgabe: node bekannt: 8");
 						if(navigator.getCurrentPosNode() < navigator.getPath().size()) {
-							RConsole.println("Ausgabe: node bekannt: 9");
 							Node currentNode = navigator.getPath().get(navigator.getCurrentPosNode());
 							Direction direction = navigator.getDirectionToDrive(currentNode);
 							driveToDirection(direction);
 							if (navigator.getCurrentPosNode() >= navigator.getPath().size() -1) {
-								RConsole.println("Ausgabe: node bekannt: 10");
 								driveToDirection(direction);
 								if(currentNode.isStartNode()) {
-									RConsole.println("Ausgabe: node bekannt: 11");
 									pilot.travel(4.0);
 									sc.resetCurrentAngle();
 									do {
 										sc.addCurrentAngle(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
 										pilot.rotate(NavigationLimits.CROSSING_TURN_RATE_ENDLINE);
-	//									RConsole.println("Ausgabe: Endline drehen: s2: " + s2.readValue() +" , wnkel: " + sc.getCurrentAngle()) ;
 									} while (sc.getCurrentAngle() < 100 || (!isInYellow(s2.readValue()) && sc.getCurrentAngle() >= 100));
-									RConsole.println("Ausgabe: node bekannt: 12");
 									DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
 									alg.execute(navigator.getStartNode());
 									navigator.setPath(alg.getPath(navigator.getFinishNode()));
 									navigator.setNavigateToFinish(true);
 								} else {
-									RConsole.println("Ausgabe: node bekannt: 13");
 									navigator.setNavigateToNode(false);
 								}
 						}
 					} else {
-						RConsole.println("Ausgabe: node bekannt: 14");
 						DijkstraAlgorithm alg = new DijkstraAlgorithm(navigator.getGraph());
 						alg.execute(navigator.getNodeForPosition());
 						if(navigator.isGraphfinished()) {
-							RConsole.println("Ausgabe: node bekannt: 15");
 							// hier kommt die navigation zum start
 							navigator.setPath(alg.getPath(navigator.getStartNode()));
 							navigator.setNavigateToNode(true);
@@ -163,18 +125,15 @@ public class CrossingBe extends AbstractBehavior{
 							driveToDirection(direction);
 						
 						} else {
-							RConsole.println("Ausgabe: node bekannt: 16");
 							Node nodeToFinish = navigator.getNodeToFinish();
 							if(nodeToFinish != null) {
-								RConsole.println("Ausgabe: node bekannt: 17");
+								// hier kommt die navigation zum noch nicht fertigen knoten
 								navigator.setPath(alg.getPath(nodeToFinish));
 								navigator.setNavigateToNode(true);
 								Node currentNode = navigator.getPath().get(navigator.getCurrentPosNode());
 								Direction direction = navigator.getDirectionToDrive(currentNode);
 								driveToDirection(direction);
-								// hier kommt die navigation zum noch nicht fertigen knoten
 							} else {
-								RConsole.println("Ausgabe: node bekannt: 18");
 								// hier kommt die navigation zum start
 								navigator.setPath(alg.getPath(navigator.getStartNode()));
 								navigator.setNavigateToNode(true);
